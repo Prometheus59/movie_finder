@@ -1,0 +1,23 @@
+{
+  "name": "movie_finder",
+  "version": "0.1.0",
+  "description": "Application to find movies I haven't watched yet",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prometheus59/movie_finder.git"
+  },
+  "author": "Ryan Karumanchery",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Prometheus59/movie_finder/issues"
+  },
+  "homepage": "https://github.com/Prometheus59/movie_finder#readme",
+  "dependencies": {
+    "node-fetch": "^3.0.0"
+  }
+}
