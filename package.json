@@ -19,5 +19,6 @@
   "homepage": "https://github.com/Prometheus59/movie_finder#readme",
   "dependencies": {
     "node-fetch": "^3.0.0"
-  }
+  },
+  "type": "module"
 }
