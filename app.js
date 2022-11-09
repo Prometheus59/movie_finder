@@ -27,72 +27,76 @@ dotenv.config();
 /**
  * Function to get device_code and user_code from traktTv api and save response to a file
  */
-let interval = 4999;
-axios({
-  method: "post",
-  url: "https://api.trakt.tv/oauth/device/code",
-  headers: {
-    "Content-Type": "application/json",
-    "trakt-api-version": "2",
-    "trakt-api-key": process.env.CLIENT_ID,
-  },
-  data: {
-    client_id: process.env.CLIENT_ID,
-  },
-})
-  .then((response) => {
-    console.log(response.data);
-    // set interval
-    interval = response.data.interval * 1000;
-    fs.writeFile("apiResponse.txt", JSON.stringify(response.data), (err) => {
-      if (err) throw err;
-      console.log("The file has been saved as apiResponse.txt!");
-    });
-    return response;
-  })
-  .then((res) => {
-    // Every 5 seconds, poll the traktTv api to check if the user has authorized the device
-    let successful = false;
-    let timeout = Number(new Date()) + (res.expires_in || 600000);
+// let interval = 4999;
+// axios({
+//   method: "post",
+//   url: "https://api.trakt.tv/oauth/device/code",
+//   headers: {
+//     "Content-Type": "application/json",
+//     "trakt-api-version": "2",
+//     "trakt-api-key": process.env.CLIENT_ID,
+//   },
+//   data: {
+//     client_id: process.env.CLIENT_ID,
+//   },
+// })
+//   .then((response) => {
+//     console.log(response.data);
+//     // set interval
+//     interval = response.data.interval * 1000;
+//     fs.writeFile("apiResponse.txt", JSON.stringify(response.data), (err) => {
+//       if (err) throw err;
+//       console.log("The file has been saved as apiResponse.txt!");
+//     });
+//     return response.data;
+//   })
+//   .then((res) => {
+//     // Every 5 seconds, poll the traktTv api to check if the user has authorized the device
+//     let successful = false;
+//     let timeout = Number(new Date()) + (res.expires_in || 600000);
 
-    console.log("Polling traktTv api: Interval = " + interval);
+//     console.log("Polling traktTv api:");
+//     console.log("Interval: ", interval);
+//     console.log("device_code: ", res.device_code);
 
-    setInterval(() => {
-      axios({
-        method: "post",
-        url: "https://api.trakt.tv/oauth/device/token",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: {
-          code: res.device_code,
-          client_id: process.env.CLIENT_ID,
-          client_secret: process.env.CLIENT_SECRET,
-        },
-      })
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            successful = true;
-            fs.writeFile("token.txt", JSON.stringify(response.data), (err) => {
-              if (err) throw err;
-              console.log("The file has been saved as token.txt");
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err.code);
-          console.log(err.response.status + " " + err.response.statusText);
-        });
-    }, interval);
-    if (Number(new Date()) > timeout || successful) clearInterval();
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+//     setInterval(() => {
+//       axios({
+//         method: "post",
+//         url: "https://api.trakt.tv/oauth/device/token",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         data: {
+//           code: res.device_code,
+//           client_id: process.env.CLIENT_ID,
+//           client_secret: process.env.CLIENT_SECRET,
+//         },
+//       })
+//         .then((response) => {
+//           console.log(response);
+//           if (response.status === 200) {
+//             successful = true;
+//             fs.writeFile("token.txt", JSON.stringify(response.data), (err) => {
+//               if (err) throw err;
+//               console.log("The file has been saved as token.txt");
+//             });
+//           }
+//         })
+//         .catch((err) => {
+//           console.log(err.code);
+//           console.log(err.response.status + " " + err.response.statusText);
+//         });
+//     }, interval);
+//     if (Number(new Date()) > timeout || successful) clearInterval();
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+//TODO: Make above function stop calling after successful response
 
 /**
- * Get Access Token
+ * Just get Access Token
  */
 
 // axios({
@@ -118,20 +122,87 @@ axios({
 //     console.log(err);
 //   });
 
-// axios({
-//   method: "get",
-//   url: "https://api.trakt.tv/users/settings",
-//   headers: {
-//     "Content-Type": "application/json",
-//     "trakt-api-version": "2",
-//     "trakt-api-key": process.env.CLIENT_ID,
-//     "Authorization": `9cca57b634e876a377738b53836970f3fd23165a93d5e40955fde52c2bf1bede`,
-//   },
-// })
-//   .then((response) => {
-//     console.log(response.data);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//     console.log(err.response.data);
-//   });
+/**
+ * Function to get a user's settings (e.g. id slug)
+ */
+
+function getUserSlug(accessToken) {
+  axios({
+    method: "get",
+    url: "https://api.trakt.tv/users/settings",
+    headers: {
+      "Content-Type": "application/json",
+      "trakt-api-version": "2",
+      "trakt-api-key": process.env.CLIENT_ID,
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+    .then((response) => {
+      console.log(response.data);
+      return response.data.user.ids.slug;
+    })
+    .catch((err) => {
+      console.log(err.response.status + " " + err.response.statusText);
+      console.log(err.response.data);
+    });
+}
+
+// let userSlug = getUserSlug(
+//   "4bb162d4c9445b2a726fde28af1f4094c55e18cb99ee30cd4615be90b29d84d1"
+// );
+
+/**
+ * Function to get a user's watch history
+ * @param {string} slug - user's slug
+ * @param {string} type - type of history to get (movies or shows)
+ */
+function getWatchHistory(slug, type) {
+  axios({
+    method: "get",
+    url: `https://api.trakt.tv/users/${slug}/watched/${type}`,
+    headers: {
+      "Content-Type": "application/json",
+      "trakt-api-version": "2",
+      "trakt-api-key": process.env.CLIENT_ID,
+    },
+  })
+    .then((response) => {
+      console.log(response);
+      fs.writeFile("watchHistory.txt", JSON.stringify(response.data), (err) => {
+        if (err) throw err;
+        console.log("The file has been saved!");
+      });
+    })
+    .catch((err) => {
+      console.log(err.response.status + " " + err.response.statusText);
+      console.log(err.response.data);
+    });
+}
+
+getWatchHistory("prometheus59", "movies");
+
+/**
+ * Function to get a movie's details
+ * @param {string} id - movies id
+ */
+
+function getMovieSummary(id) {
+  axios({
+    method: "get",
+    url: `https://api.trakt.tv/movies/${id}`,
+    headers: {
+      "Content-Type": "application/json",
+      "trakt-api-version": "2",
+      "trakt-api-key": process.env.CLIENT_ID,
+    },
+  })
+    .then(() => {
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err.response.status + " " + err.response.statusText);
+      console.log(err.response.data);
+    });
+}
+
+// getMovieSummary("8604112762");
