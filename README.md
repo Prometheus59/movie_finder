@@ -1,2 +1,2 @@
 # movie_finder
-Application to find movies I haven't watched yet
+Application to find movies unwatched movies. Uses TraktTv to get previously watched movies.
