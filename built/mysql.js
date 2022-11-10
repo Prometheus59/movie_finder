@@ -14,18 +14,19 @@ con.connect(function (err) {
         throw err;
     console.log("Connected!");
 });
-var inception = {
-    id: 16662,
-    title: "Inception",
-    year: 2010,
-};
-con.query("INSERT INTO movies SET ?", inception, function (err, res) {
-    if (err)
-        throw err;
-    console.log("Last insert ID:", res);
-});
-con.end(function (err) {
-    // The connection is terminated gracefully
-    // Ensures all remaining queries are executed
-    // Then sends a quit packet to the MySQL server.
-});
+// const inception = {
+//   id: 16662,
+//   title: "Inception",
+//   year: 2010,
+// };
+// // This function works
+// con.query("INSERT INTO movies SET ?", inception, (err, res) => {
+//   if (err) throw err;
+//   console.log("Last insert ID:", res.insertId);
+// });
+module.exports = con;
+// con.end((err) => {
+//   // The connection is terminated gracefully
+//   // Ensures all remaining queries are executed
+//   // Then sends a quit packet to the MySQL server.
+// });

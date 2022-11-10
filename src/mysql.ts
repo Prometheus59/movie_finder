@@ -15,20 +15,22 @@ con.connect((err) => {
   console.log("Connected!");
 });
 
-const inception = {
-  id: 16662,
-  title: "Inception",
-  year: 2010,
-};
+// const inception = {
+//   id: 16662,
+//   title: "Inception",
+//   year: 2010,
+// };
 
-// This function works
-con.query("INSERT INTO movies SET ?", inception, (err, res) => {
-  if (err) throw err;
-  console.log("Last insert ID:", res.insertId);
-});
+// // This function works
+// con.query("INSERT INTO movies SET ?", inception, (err, res) => {
+//   if (err) throw err;
+//   console.log("Last insert ID:", res.insertId);
+// });
 
-con.end((err) => {
-  // The connection is terminated gracefully
-  // Ensures all remaining queries are executed
-  // Then sends a quit packet to the MySQL server.
-});
+module.exports = con;
+
+// con.end((err) => {
+//   // The connection is terminated gracefully
+//   // Ensures all remaining queries are executed
+//   // Then sends a quit packet to the MySQL server.
+// });

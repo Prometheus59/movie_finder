@@ -1,31 +1,47 @@
 import axios from "axios";
 import * as dotenv from "dotenv";
 import * as fs from "fs";
+
+// import database connection
+const con = require("./mysql");
+
 dotenv.config();
 
-// console.log(process.env.CLIENT_ID);
+interface Movie {
+  title: string;
+  year: number;
+  id: number;
+}
 
 /**
  * Function to get trending movies and save response to a file
  */
 function getTrendingMovies() {
-  axios({
-    method: "get",
-    url: "https://api.trakt.tv/movies/trending",
-    headers: {
-      "Content-Type": "application/json",
-      "trakt-api-version": "2",
-      "trakt-api-key": process.env.CLIENT_ID,
-    },
-  }).then((response) => {
-    console.log(response.data);
-    fs.writeFile("trendingMovies.txt", JSON.stringify(response.data), (err) => {
-      if (err) throw err;
-      console.log("The file has been saved!");
-    });
-    return response.data;
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: "https://api.trakt.tv/movies/trending?limit=25",
+      headers: {
+        "Content-Type": "application/json",
+        "trakt-api-version": "2",
+        "trakt-api-key": process.env.CLIENT_ID,
+      },
+    })
+      .then((response) => {
+        // console.log(response.data);
+        // fs.writeFile("trendingMovies.txt", JSON.stringify(response.data), (err) => {
+        //   if (err) throw err;
+        //   console.log("The file has been saved!");
+        // });
+        resolve(response.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 }
+
+// getTrendingMovies();
 
 /**
  * Function to authenticate a user
@@ -161,7 +177,7 @@ function getUserSlug(accessToken) {
 // );
 
 /**
- * Function to get a user's watch history and save response to json file
+ * Function to get a user's watch history and save response to database
  * @param {string} slug - user's slug
  * @param {string} type - type of history to get (movies or shows)
  */
@@ -176,15 +192,29 @@ function getWatchHistory(slug, type) {
     },
   })
     .then((response) => {
-      console.log(response);
-      fs.writeFile(
-        "watchHistory.json",
-        JSON.stringify(response.data),
-        (err) => {
+      console.log(response.data);
+
+      let movie: Movie;
+
+      // TODO: Get list of movie ID's from database, if any conflicting id's are found, skip inserting that movie
+
+      for (let i = 0; i < response.data.length; i++) {
+        let data = response.data[i];
+        movie = {
+          title: data.movie.title,
+          year: data.movie.year,
+          id: data.movie.ids.trakt,
+        };
+
+        con.query("INSERT INTO MOVIES SET ? ", movie, (err, res) => {
           if (err) throw err;
-          console.log("The file has been saved!");
-        }
-      );
+          console.log("Last insert ID:", res.insertId);
+        });
+      }
+      con.end((err) => {
+        if (err) throw err;
+        console.log("Connection closed");
+      });
     })
     .catch((err) => {
       console.log(err.response.status + " " + err.response.statusText);
@@ -219,3 +249,70 @@ function getMovieSummary(id) {
 }
 
 // getMovieSummary("8604112762");
+
+// MYSQL CONNECTION FUNCTIONS
+
+/**
+ * Function to retrieve existing movies from database
+ * @returns {[] numbers} Array of movie id's
+ */
+
+function retrieveMovies() {
+  let movieIds: number[] = [];
+
+  return new Promise((resolve, reject) => {
+    con.query("SELECT id FROM MOVIES", (err, res) => {
+      if (err) reject(err);
+      resolve(res);
+    });
+  }).then((rows: any[]) => {
+    rows.forEach((row) => {
+      // console.log("row id is " + row.id);
+      movieIds.push(row.id);
+    });
+    return movieIds;
+  });
+}
+
+/**
+ * Function to recommend new movies based on a user's watch history
+ * @param {string} type - type of movie recommendation (trending, popular, recommended)
+ * @return {Movie[]} - list of recommended movies
+ */
+
+function recommendMovies(type) {
+  let Ids: number[] = [];
+  let recommendedMovies: Movie[] = [];
+
+  console.log(`Getting ${type} movies\n`);
+  retrieveMovies()
+    .then((movieIds: number[]) => {
+      Ids = movieIds;
+    })
+    .then(() => {
+      return getTrendingMovies();
+    })
+    .then((trendingMovies: any[]) => {
+      let movies: Movie[] = [];
+      for (let i = 0; i < trendingMovies.length; i++) {
+        movies.push({
+          title: trendingMovies[i].movie.title,
+          year: trendingMovies[i].movie.year,
+          id: trendingMovies[i].movie.ids.trakt,
+        });
+      }
+      return movies;
+    })
+    .then((trendingMovies: Movie[]) => {
+      for (let i = 0; i < trendingMovies.length; i++) {
+        if (!Ids.includes(trendingMovies[i].id)) {
+          console.log(`${trendingMovies[i].title}: ${trendingMovies[i].year}`);
+          recommendedMovies.push(trendingMovies[i]);
+        }
+      }
+      return recommendedMovies;
+    });
+  //TODO: Find out why script continues running
+}
+
+recommendMovies("trending");
