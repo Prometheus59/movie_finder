@@ -9,11 +9,12 @@ dotenv.config();
 /**
  * Function to get trending movies and save response to a file
  */
-function getTrendingMovies() {
+function getTrendingMovies(quantity) {
+    if (quantity === void 0) { quantity = 25; }
     return new Promise(function (resolve, reject) {
         (0, axios_1.default)({
             method: "get",
-            url: "https://api.trakt.tv/movies/trending?limit=25",
+            url: "https://api.trakt.tv/movies/trending?limit=${quantity}",
             headers: {
                 "Content-Type": "application/json",
                 "trakt-api-version": "2",
@@ -21,11 +22,6 @@ function getTrendingMovies() {
             },
         })
             .then(function (response) {
-            // console.log(response.data);
-            // fs.writeFile("trendingMovies.txt", JSON.stringify(response.data), (err) => {
-            //   if (err) throw err;
-            //   console.log("The file has been saved!");
-            // });
             resolve(response.data);
         })
             .catch(function (err) {
@@ -36,7 +32,7 @@ function getTrendingMovies() {
 // getTrendingMovies();
 /**
  * Function to authenticate a user
- *
+ * TODO: Test that this function stops calling after successful response
  */
 function authenticateUser() {
     var interval = 5000;
@@ -103,32 +99,6 @@ function authenticateUser() {
         console.log(err);
     });
 }
-//TODO: Test that above function stops calling after successful response
-/**
- * Just get Access Token
- */
-// axios({
-//   method: "post",
-//   url: "https://api.trakt.tv/oauth/device/token",
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-//   data: {
-//     code: "f938ca86d74fda4ba39739e0d26dc4f0418acaccaa47601e0558fd5cf8ee0d53",
-//     client_id: process.env.CLIENT_ID,
-//     client_secret: process.env.CLIENT_SECRET,
-//   },
-// })
-//   .then((response) => {
-//     console.log(response);
-//     fs.writeFile("token.txt", JSON.stringify(response.data), (err) => {
-//       if (err) throw err;
-//       console.log("The file has been saved!");
-//     });
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
 /**
  * Function to get a user's settings (e.g. id slug)
  */
@@ -204,25 +174,28 @@ function getWatchHistory(slug, type) {
  * @param {string} id - movies id
  */
 function getMovieSummary(id) {
-    (0, axios_1.default)({
-        method: "get",
-        url: "https://api.trakt.tv/movies/".concat(id),
-        headers: {
-            "Content-Type": "application/json",
-            "trakt-api-version": "2",
-            "trakt-api-key": process.env.CLIENT_ID,
-        },
-    })
-        .then(function (res) {
-        console.log(res);
-    })
-        .catch(function (err) {
-        console.log(err.response.status + " " + err.response.statusText);
-        console.log(err.response.data);
+    return new Promise(function (resolve, reject) {
+        (0, axios_1.default)({
+            method: "get",
+            url: "https://api.trakt.tv/movies/".concat(id),
+            headers: {
+                "Content-Type": "application/json",
+                "trakt-api-version": "2",
+                "trakt-api-key": process.env.CLIENT_ID,
+            },
+        })
+            .then(function (res) {
+            console.log(res);
+            resolve(res);
+        })
+            .catch(function (err) {
+            console.log(err.response.status + " " + err.response.statusText);
+            console.log(err.response.data);
+            reject(err);
+        });
     });
 }
 // getMovieSummary("8604112762");
-// MYSQL CONNECTION FUNCTIONS
 /**
  * Function to retrieve existing movies from database
  * @returns {[] numbers} Array of movie id's
@@ -271,6 +244,7 @@ function recommendMovies(type) {
         return movies;
     })
         .then(function (trendingMovies) {
+        //TODO: Move this step up to previous .then() to avoid unnecessary looping
         for (var i = 0; i < trendingMovies.length; i++) {
             if (!Ids.includes(trendingMovies[i].id)) {
                 console.log("".concat(trendingMovies[i].title, ": ").concat(trendingMovies[i].year));
@@ -279,6 +253,6 @@ function recommendMovies(type) {
         }
         return recommendedMovies;
     });
-    //TODO: Find out why script continues running
 }
-recommendMovies("trending");
+con.end();
+// recommendMovies("trending");
