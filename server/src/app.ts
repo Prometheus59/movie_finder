@@ -16,11 +16,11 @@ interface Movie {
 /**
  * Function to get trending movies and save response to a file
  */
-function getTrendingMovies() {
+function getTrendingMovies(quantity: number = 25) {
   return new Promise((resolve, reject) => {
     axios({
       method: "get",
-      url: "https://api.trakt.tv/movies/trending?limit=25",
+      url: "https://api.trakt.tv/movies/trending?limit=${quantity}",
       headers: {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
@@ -28,11 +28,6 @@ function getTrendingMovies() {
       },
     })
       .then((response) => {
-        // console.log(response.data);
-        // fs.writeFile("trendingMovies.txt", JSON.stringify(response.data), (err) => {
-        //   if (err) throw err;
-        //   console.log("The file has been saved!");
-        // });
         resolve(response.data);
       })
       .catch((err) => {
@@ -45,7 +40,7 @@ function getTrendingMovies() {
 
 /**
  * Function to authenticate a user
- *
+ * TODO: Test that this function stops calling after successful response
  */
 function authenticateUser() {
   let interval = 5000;
@@ -117,35 +112,6 @@ function authenticateUser() {
       console.log(err);
     });
 }
-
-//TODO: Test that above function stops calling after successful response
-
-/**
- * Just get Access Token
- */
-
-// axios({
-//   method: "post",
-//   url: "https://api.trakt.tv/oauth/device/token",
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-//   data: {
-//     code: "f938ca86d74fda4ba39739e0d26dc4f0418acaccaa47601e0558fd5cf8ee0d53",
-//     client_id: process.env.CLIENT_ID,
-//     client_secret: process.env.CLIENT_SECRET,
-//   },
-// })
-//   .then((response) => {
-//     console.log(response);
-//     fs.writeFile("token.txt", JSON.stringify(response.data), (err) => {
-//       if (err) throw err;
-//       console.log("The file has been saved!");
-//     });
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
 
 /**
  * Function to get a user's settings (e.g. id slug)
@@ -230,27 +196,29 @@ function getWatchHistory(slug, type) {
  */
 
 function getMovieSummary(id) {
-  axios({
-    method: "get",
-    url: `https://api.trakt.tv/movies/${id}`,
-    headers: {
-      "Content-Type": "application/json",
-      "trakt-api-version": "2",
-      "trakt-api-key": process.env.CLIENT_ID,
-    },
-  })
-    .then((res) => {
-      console.log(res);
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: `https://api.trakt.tv/movies/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+        "trakt-api-version": "2",
+        "trakt-api-key": process.env.CLIENT_ID,
+      },
     })
-    .catch((err) => {
-      console.log(err.response.status + " " + err.response.statusText);
-      console.log(err.response.data);
-    });
+      .then((res) => {
+        console.log(res);
+        resolve(res);
+      })
+      .catch((err) => {
+        console.log(err.response.status + " " + err.response.statusText);
+        console.log(err.response.data);
+        reject(err);
+      });
+  });
 }
 
 // getMovieSummary("8604112762");
-
-// MYSQL CONNECTION FUNCTIONS
 
 /**
  * Function to retrieve existing movies from database
@@ -279,7 +247,6 @@ function retrieveMovies() {
  * @param {string} type - type of movie recommendation (trending, popular, recommended)
  * @return {Movie[]} - list of recommended movies
  */
-
 function recommendMovies(type) {
   let Ids: number[] = [];
   let recommendedMovies: Movie[] = [];
@@ -304,6 +271,7 @@ function recommendMovies(type) {
       return movies;
     })
     .then((trendingMovies: Movie[]) => {
+      //TODO: Move this step up to previous .then() to avoid unnecessary looping
       for (let i = 0; i < trendingMovies.length; i++) {
         if (!Ids.includes(trendingMovies[i].id)) {
           console.log(`${trendingMovies[i].title}: ${trendingMovies[i].year}`);
@@ -312,7 +280,7 @@ function recommendMovies(type) {
       }
       return recommendedMovies;
     });
-  //TODO: Find out why script continues running
 }
 
-recommendMovies("trending");
+con.end();
+// recommendMovies("trending");
