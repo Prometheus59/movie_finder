@@ -1,19 +1,19 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var express = require("express");
+var bodyParser = require("body-parser");
+var cors = require("cors");
+var app = express();
+var corsOptions = {
+    origin: "http://localhost:8081",
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var app = (0, express_1.default)();
-app.get("/", function (req, res, next) {
-    try {
-        res.send("Hello World!");
-    }
-    catch (error) {
-        next(error);
-    }
+app.use(cors(corsOptions));
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+app.get("/", function (req, res) {
+    res.json({ message: "Welcome to the find movie application" });
 });
-var PORT = 3000;
+var PORT = process.env.PORT || 8080;
 app.listen(PORT, function () {
-    console.log("App listening on port ".concat(PORT));
+    console.log("Server running on port ".concat(PORT));
 });
