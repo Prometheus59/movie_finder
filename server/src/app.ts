@@ -27,8 +27,18 @@ function getTrendingMovies(quantity: number = 25) {
         "trakt-api-key": process.env.CLIENT_ID,
       },
     })
-      .then((response) => {
-        resolve(response.data);
+      .then((res: any) => {
+        const trendingMovies = res.data;
+        console.log(trendingMovies.data);
+        let movies: Movie[] = [];
+        for (let i = 0; i < trendingMovies.length; i++) {
+          movies.push({
+            title: trendingMovies[i].movie.title,
+            year: trendingMovies[i].movie.year,
+            id: trendingMovies[i].movie.ids.trakt,
+          });
+        }
+        resolve(movies);
       })
       .catch((err) => {
         reject(err);
@@ -282,5 +292,7 @@ function recommendMovies(type) {
     });
 }
 
-con.end();
+// con.end();
 // recommendMovies("trending");
+
+export { getTrendingMovies, getMovieSummary, recommendMovies };
