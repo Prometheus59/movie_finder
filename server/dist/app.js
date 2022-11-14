@@ -26,6 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.recommendMovies = exports.getMovieSummary = exports.getTrendingMovies = void 0;
 var axios_1 = __importDefault(require("axios"));
 var dotenv = __importStar(require("dotenv"));
 var fs = __importStar(require("fs"));
@@ -47,14 +48,24 @@ function getTrendingMovies(quantity) {
                 "trakt-api-key": process.env.CLIENT_ID,
             },
         })
-            .then(function (response) {
-            resolve(response.data);
+            .then(function (res) {
+            var trendingMovies = res.data;
+            var movies = [];
+            for (var i = 0; i < trendingMovies.length; i++) {
+                movies.push({
+                    title: trendingMovies[i].movie.title,
+                    year: trendingMovies[i].movie.year,
+                    id: trendingMovies[i].movie.ids.trakt,
+                });
+            }
+            resolve(movies);
         })
             .catch(function (err) {
             reject(err);
         });
     });
 }
+exports.getTrendingMovies = getTrendingMovies;
 // getTrendingMovies();
 /**
  * Function to authenticate a user
@@ -221,6 +232,7 @@ function getMovieSummary(id) {
         });
     });
 }
+exports.getMovieSummary = getMovieSummary;
 // getMovieSummary("8604112762");
 /**
  * Function to retrieve existing movies from database
@@ -280,5 +292,4 @@ function recommendMovies(type) {
         return recommendedMovies;
     });
 }
-con.end();
-// recommendMovies("trending");
+exports.recommendMovies = recommendMovies;
