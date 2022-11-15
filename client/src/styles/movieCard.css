@@ -1,0 +1,26 @@
+.feature-movie-card {
+  position: relative;
+  width: 600px;
+  height: 300px;
+  margin: 20px;
+}
+
+.colored {
+  background-color: #f37515;
+  width: 600px;
+  height: 300px;
+  border-radius: 10px;
+}
+
+img {
+  width: 600px;
+  height: 300px;
+  border-radius: 10px;
+}
+
+.feature-movie-card-text {
+  position: absolute;
+  bottom: 40px;
+  left: 20px;
+  font-weight: bold;
+}
