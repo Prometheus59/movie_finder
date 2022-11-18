@@ -17,7 +17,19 @@ export default function MovieCard(props: MovieCardProps) {
         <div className="title">{props.title}</div>
         <p className="desc">{props.description}</p>
         <div className="bottom-text">
-          <div className="genres">{props.genres}</div>
+          <div className="movie-info">
+            <div>2010</div>
+            <div className="genres">
+              {props.genres.map((genre, i) => {
+                if (i === props.genres.length - 1) {
+                  return <span key={i}>{genre}</span>;
+                } else {
+                  return <span>{genre + ", "}</span>;
+                }
+              })}
+            </div>
+            <div className="runtime">1 h 30 min</div>
+          </div>
           {/* //TODO: Map styles to above genres */}
           <button className="details">Details</button>
         </div>

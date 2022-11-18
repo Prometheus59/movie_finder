@@ -1,13 +1,28 @@
 .navbar {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   background-color: #343940;
+  height: 60px;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  width: 300px;
 }
 
 #logo {
-  width: 3em;
-  height: 3em;
+  width: 2.5em;
+  height: 2.5em;
+  margin: 5px 10px 5px 10px;
+}
+
+#search-icon {
+  width: 1.5em;
+  height: 1.5em;
 }
 
 a {
@@ -25,4 +40,13 @@ a {
 
 .inactive {
   color: white;
+}
+
+.navbar-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 200px;
+  margin-right: 30px;
 }
