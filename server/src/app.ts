@@ -1,16 +1,17 @@
 import axios from "axios";
-import * as dotenv from "dotenv";
+require("dotenv").config();
 import * as fs from "fs";
 
 // import database connection
 const con = require("./mysql");
 
-dotenv.config();
+// console.log(`password for app.ts is ${process.env.MYSQL_PASSWORD}`);
 
 interface Movie {
   title: string;
   year: number;
   id: number;
+  tmdb_id: number;
 }
 
 /**
@@ -35,6 +36,7 @@ function getTrendingMovies(quantity: number = 25) {
             title: trendingMovies[i].movie.title,
             year: trendingMovies[i].movie.year,
             id: trendingMovies[i].movie.ids.trakt,
+            tmdb_id: trendingMovies[i].movie.ids.tmdb,
           });
         }
         resolve(movies);
@@ -46,6 +48,42 @@ function getTrendingMovies(quantity: number = 25) {
 }
 
 // getTrendingMovies();
+
+type category = "trending" | "popular" | "anticipated" | "boxoffice";
+
+// Function to get a list of movies with different categories
+function getMovies(category: string, quantity: number = 25) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: `https://api.trakt.tv/movies/${category}?limit=${quantity}`,
+      headers: {
+        "Content-Type": "application/json",
+        "trakt-api-version": "2",
+        "trakt-api-key": process.env.CLIENT_ID,
+      },
+    })
+      .then((res: any) => {
+        const movies = res.data;
+        let movieList: Movie[] = [];
+        for (let i = 0; i < movies.length; i++) {
+          movieList.push({
+            title: movies[i].movie.title,
+            year: movies[i].movie.year,
+            id: movies[i].movie.ids.trakt,
+            tmdb_id: movies[i].movie.ids.tmdb,
+          });
+        }
+        // console.log(`Movies list is ${JSON.stringify(movieList)}`);
+        resolve(movieList);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+getMovies("trending");
 
 /**
  * Function to authenticate a user
@@ -157,6 +195,11 @@ function getUserSlug(accessToken) {
  * @param {string} type - type of history to get (movies or shows)
  */
 function getWatchHistory(slug, type) {
+  con.connect((err) => {
+    if (err) throw err;
+    console.log("Connected!");
+  });
+
   axios({
     method: "get",
     url: `https://api.trakt.tv/users/${slug}/watched/${type}`,
@@ -179,6 +222,7 @@ function getWatchHistory(slug, type) {
           title: data.movie.title,
           year: data.movie.year,
           id: data.movie.ids.trakt,
+          tmdb_id: data.movie.ids.tmdb,
         };
 
         con.query("INSERT INTO MOVIES SET ? ", movie, (err, res) => {
@@ -235,6 +279,11 @@ function getMovieSummary(id) {
  */
 
 function retrieveMovies() {
+  con.connect((err) => {
+    if (err) throw err;
+    console.log("Connected!");
+  });
+
   let movieIds: number[] = [];
 
   return new Promise((resolve, reject) => {
@@ -275,6 +324,7 @@ function recommendMovies(type) {
           title: trendingMovies[i].movie.title,
           year: trendingMovies[i].movie.year,
           id: trendingMovies[i].movie.ids.trakt,
+          tmdb_id: trendingMovies[i].movie.ids.tmdb,
         });
       }
       return movies;
@@ -294,4 +344,4 @@ function recommendMovies(type) {
 // con.end();
 // recommendMovies("trending");
 
-export { getTrendingMovies, getMovieSummary, recommendMovies };
+export { getTrendingMovies, getMovieSummary, recommendMovies, getMovies };

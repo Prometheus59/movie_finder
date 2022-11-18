@@ -26,13 +26,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.recommendMovies = exports.getMovieSummary = exports.getTrendingMovies = void 0;
+exports.getMovies = exports.recommendMovies = exports.getMovieSummary = exports.getTrendingMovies = void 0;
 var axios_1 = __importDefault(require("axios"));
-var dotenv = __importStar(require("dotenv"));
+require("dotenv").config();
 var fs = __importStar(require("fs"));
 // import database connection
 var con = require("./mysql");
-dotenv.config();
 /**
  * Function to get trending movies and save response to a file
  */
@@ -56,6 +55,7 @@ function getTrendingMovies(quantity) {
                     title: trendingMovies[i].movie.title,
                     year: trendingMovies[i].movie.year,
                     id: trendingMovies[i].movie.ids.trakt,
+                    tmdb_id: trendingMovies[i].movie.ids.tmdb,
                 });
             }
             resolve(movies);
@@ -66,7 +66,40 @@ function getTrendingMovies(quantity) {
     });
 }
 exports.getTrendingMovies = getTrendingMovies;
-// getTrendingMovies();
+// Function to get a list of movies with different categories
+function getMovies(category, quantity) {
+    if (quantity === void 0) { quantity = 25; }
+    return new Promise(function (resolve, reject) {
+        (0, axios_1.default)({
+            method: "get",
+            url: "https://api.trakt.tv/movies/".concat(category, "?limit=").concat(quantity),
+            headers: {
+                "Content-Type": "application/json",
+                "trakt-api-version": "2",
+                "trakt-api-key": process.env.CLIENT_ID,
+            },
+        })
+            .then(function (res) {
+            var movies = res.data;
+            var movieList = [];
+            for (var i = 0; i < movies.length; i++) {
+                movieList.push({
+                    title: movies[i].movie.title,
+                    year: movies[i].movie.year,
+                    id: movies[i].movie.ids.trakt,
+                    tmdb_id: movies[i].movie.ids.tmdb,
+                });
+            }
+            // console.log(`Movies list is ${JSON.stringify(movieList)}`);
+            resolve(movieList);
+        })
+            .catch(function (err) {
+            reject(err);
+        });
+    });
+}
+exports.getMovies = getMovies;
+getMovies("trending");
 /**
  * Function to authenticate a user
  * TODO: Test that this function stops calling after successful response
@@ -168,6 +201,11 @@ function getUserSlug(accessToken) {
  * @param {string} type - type of history to get (movies or shows)
  */
 function getWatchHistory(slug, type) {
+    con.connect(function (err) {
+        if (err)
+            throw err;
+        console.log("Connected!");
+    });
     (0, axios_1.default)({
         method: "get",
         url: "https://api.trakt.tv/users/".concat(slug, "/watched/").concat(type),
@@ -187,6 +225,7 @@ function getWatchHistory(slug, type) {
                 title: data.movie.title,
                 year: data.movie.year,
                 id: data.movie.ids.trakt,
+                tmdb_id: data.movie.ids.tmdb,
             };
             con.query("INSERT INTO MOVIES SET ? ", movie, function (err, res) {
                 if (err)
@@ -239,6 +278,11 @@ exports.getMovieSummary = getMovieSummary;
  * @returns {[] numbers} Array of movie id's
  */
 function retrieveMovies() {
+    con.connect(function (err) {
+        if (err)
+            throw err;
+        console.log("Connected!");
+    });
     var movieIds = [];
     return new Promise(function (resolve, reject) {
         con.query("SELECT id FROM MOVIES", function (err, res) {
@@ -277,6 +321,7 @@ function recommendMovies(type) {
                 title: trendingMovies[i].movie.title,
                 year: trendingMovies[i].movie.year,
                 id: trendingMovies[i].movie.ids.trakt,
+                tmdb_id: trendingMovies[i].movie.ids.tmdb,
             });
         }
         return movies;

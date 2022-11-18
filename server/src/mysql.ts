@@ -1,18 +1,14 @@
 const mysql = require("mysql");
 import * as dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
+console.log(`password for mysql is ${process.env.MYSQL_PASSWORD}`);
 
 const con = mysql.createConnection({
   host: "localhost",
   user: "traktv",
   password: process.env.MYSQL_PASSWORD,
   database: "find_movies",
-});
-
-con.connect((err) => {
-  if (err) throw err;
-  console.log("Connected!");
 });
 
 // const inception = {

@@ -25,17 +25,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var mysql = require("mysql");
 var dotenv = __importStar(require("dotenv"));
-dotenv.config();
+dotenv.config({ path: "../.env" });
+console.log("password for mysql is ".concat(process.env.MYSQL_PASSWORD));
 var con = mysql.createConnection({
     host: "localhost",
     user: "traktv",
     password: process.env.MYSQL_PASSWORD,
     database: "find_movies",
-});
-con.connect(function (err) {
-    if (err)
-        throw err;
-    console.log("Connected!");
 });
 // const inception = {
 //   id: 16662,

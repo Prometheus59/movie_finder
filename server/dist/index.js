@@ -16,6 +16,13 @@ app.get("/trending", function (req, res) {
         res.json(movies);
     });
 });
+// Create route to get movie with parameters for categories
+app.get("/movies/:category", function (req, res) {
+    var category = req.params.category;
+    (0, app_1.getMovies)(category).then(function (movies) {
+        res.json(movies);
+    });
+});
 // set port, listen for requests
 var PORT = process.env.PORT || 8080;
 app.listen(PORT, function () {

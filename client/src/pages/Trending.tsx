@@ -5,6 +5,7 @@ interface Movie {
   title: string;
   year: number;
   id: number;
+  tmdb_id: number;
 }
 
 function Trending() {

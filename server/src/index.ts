@@ -1,7 +1,7 @@
 const express = require("express");
 // const bodyParser = require("body-parser");
 const cors = require("cors");
-import { getTrendingMovies } from "./app";
+import { getTrendingMovies, getMovies } from "./app";
 
 const app = express();
 
@@ -13,9 +13,16 @@ app.get("/", (req, res) => {
 });
 
 // Basic get routes
-
 app.get("/trending", (req, res) => {
   getTrendingMovies().then((movies) => {
+    res.json(movies);
+  });
+});
+
+// Create route to get movie with parameters for categories
+app.get("/movies/:category", (req, res) => {
+  const category = req.params.category;
+  getMovies(category).then((movies) => {
     res.json(movies);
   });
 });
