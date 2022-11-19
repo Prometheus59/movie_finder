@@ -17,7 +17,6 @@ const con = mysql.createConnection({
 //   year: 2010,
 // };
 
-// // This function works
 // con.query("INSERT INTO movies SET ?", inception, (err, res) => {
 //   if (err) throw err;
 //   console.log("Last insert ID:", res.insertId);

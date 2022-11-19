@@ -1,7 +1,7 @@
 const express = require("express");
 // const bodyParser = require("body-parser");
 const cors = require("cors");
-import { getTrendingMovies, getMovies } from "./app";
+import { getTrendingMovies, getMovies } from "./trakt";
 import { getMovieDetails } from "./tmdb";
 
 const app = express();

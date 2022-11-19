@@ -4,7 +4,6 @@ import * as fs from "fs";
 
 // import database connection
 const con = require("./mysql");
-
 // console.log(`password for app.ts is ${process.env.MYSQL_PASSWORD}`);
 
 interface Movie {
