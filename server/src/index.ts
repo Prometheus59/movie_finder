@@ -2,7 +2,7 @@ const express = require("express");
 // const bodyParser = require("body-parser");
 const cors = require("cors");
 import { getTrendingMovies, getMovies } from "./trakt";
-import { getMovieDetails } from "./tmdb";
+import { getMovieInfo } from "./tmdb";
 
 const app = express();
 
@@ -28,9 +28,9 @@ app.get("/movies/:category", (req, res) => {
   });
 });
 
-app.get("/movie/details/:tmdb_id", (req, res) => {
+app.get("/movie/:tmdb_id", (req, res) => {
   const tmdb_id = req.params.tmdb_id;
-  getMovieDetails(tmdb_id).then((movie) => {
+  getMovieInfo(tmdb_id).then((movie) => {
     res.json(movie);
   });
 });

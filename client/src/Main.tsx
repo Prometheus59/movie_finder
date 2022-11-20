@@ -7,6 +7,7 @@ import Trending from "./pages/Trending";
 import Movies from "./pages/Movies";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
+import MovieInfo from "./pages/MovieInfo";
 
 const Main = () => {
   return (
@@ -16,6 +17,7 @@ const Main = () => {
       <Route path="/settings" element={<Settings />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/movies" element={<Movies />} />
+      <Route path="/movie/:id" element={<MovieInfo/>} />
     </Routes>
   );
 };
