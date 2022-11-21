@@ -1,7 +1,10 @@
 import React from "react";
 import "../styles/movieCard.css";
 
+import { Link } from "react-router-dom";
+
 interface MovieCardProps {
+  tmdb_id: number;
   title: string;
   img: string;
   description: string;
@@ -9,6 +12,10 @@ interface MovieCardProps {
 }
 
 export default function MovieCard(props: MovieCardProps) {
+
+  const { tmdb_id, title, img, description, genres } = props;
+  const movie_detail_url = `/movie/${tmdb_id}`;
+
   return (
     <div className="feature-movie-card">
       <img src={props.img} alt="movie backdrop" />
@@ -31,7 +38,11 @@ export default function MovieCard(props: MovieCardProps) {
             <div className="runtime">1 h 30 min</div>
           </div>
           {/* //TODO: Map styles to above genres */}
-          <button className="details">Details</button>
+          <button className="details">
+            <Link to={movie_detail_url}>
+              More details
+            </Link>
+          </button>
         </div>
       </div>
     </div>

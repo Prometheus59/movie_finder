@@ -1,9 +1,9 @@
 export interface Movie {
-    id: number;
+    trakt_id: number;
     title: string;
     year: number;
     tmdb_id: number;
-    overview: string; // Movie description
-    runtime: number; // In minutes
-    providers: string[]; // Streaming providers
+    overview?: string; // Movie description -> Optional
+    runtime?: number; // In minutes -> Optional
+    providers?: string[]; // Streaming providers-> Optional
   }

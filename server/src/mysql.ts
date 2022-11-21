@@ -8,7 +8,7 @@ const con = mysql.createConnection({
   host: "localhost",
   user: "traktv",
   password: process.env.MYSQL_PASSWORD,
-  database: "find_movies",
+  database: "movie_finder",
 });
 
 // const inception = {

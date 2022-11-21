@@ -6,13 +6,7 @@ import * as fs from "fs";
 const con = require("./mysql");
 // console.log(`password for app.ts is ${process.env.MYSQL_PASSWORD}`);
 
-interface Movie {
-  title: string;
-  year: number;
-  id: number;
-  tmdb_id: number;
-}
-
+import { Movie } from "./types";
 /**
  * Function to get trending movies and save response to a file
  */
@@ -34,7 +28,7 @@ function getTrendingMovies(quantity: number = 25) {
           movies.push({
             title: trendingMovies[i].movie.title,
             year: trendingMovies[i].movie.year,
-            id: trendingMovies[i].movie.ids.trakt,
+            trakt_id: trendingMovies[i].movie.ids.trakt,
             tmdb_id: trendingMovies[i].movie.ids.tmdb,
           });
         }
@@ -69,7 +63,7 @@ function getMovies(category: string, quantity: number = 25) {
           movieList.push({
             title: movies[i].movie.title,
             year: movies[i].movie.year,
-            id: movies[i].movie.ids.trakt,
+            trakt_id: movies[i].movie.ids.trakt,
             tmdb_id: movies[i].movie.ids.tmdb,
           });
         }
@@ -82,7 +76,7 @@ function getMovies(category: string, quantity: number = 25) {
   });
 }
 
-getMovies("trending");
+// getMovies("trending");
 
 /**
  * Function to authenticate a user
@@ -220,7 +214,7 @@ function getWatchHistory(slug, type) {
         movie = {
           title: data.movie.title,
           year: data.movie.year,
-          id: data.movie.ids.trakt,
+          trakt_id: data.movie.ids.trakt,
           tmdb_id: data.movie.ids.tmdb,
         };
 
@@ -311,6 +305,7 @@ function recommendMovies(type) {
   console.log(`Getting ${type} movies\n`);
   retrieveMovies()
     .then((movieIds: number[]) => {
+      // TODO: Rename variables to be more descriptive
       Ids = movieIds;
     })
     .then(() => {
@@ -322,7 +317,7 @@ function recommendMovies(type) {
         movies.push({
           title: trendingMovies[i].movie.title,
           year: trendingMovies[i].movie.year,
-          id: trendingMovies[i].movie.ids.trakt,
+          trakt_id: trendingMovies[i].movie.ids.trakt,
           tmdb_id: trendingMovies[i].movie.ids.tmdb,
         });
       }
@@ -331,7 +326,7 @@ function recommendMovies(type) {
     .then((trendingMovies: Movie[]) => {
       //TODO: Move this step up to previous .then() to avoid unnecessary looping
       for (let i = 0; i < trendingMovies.length; i++) {
-        if (!Ids.includes(trendingMovies[i].id)) {
+        if (!Ids.includes(trendingMovies[i].trakt_id)) {
           console.log(`${trendingMovies[i].title}: ${trendingMovies[i].year}`);
           recommendedMovies.push(trendingMovies[i]);
         }

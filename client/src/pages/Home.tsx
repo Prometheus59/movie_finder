@@ -17,6 +17,7 @@ function Home() {
         {/* Feature movie cards go here */}
         <MovieCard
           title="Inception"
+          tmdb_id={27205}
           img="https://media.wired.com/photos/59341d3286599a3834f7cf6c/master/pass/inception_paris_660.jpg"
           description="Dom Cobb (Leonardo DiCaprio) is a thief with the rare ability to enter people's dreams and steal their secrets from their subconscious. His skill has made him a hot commodity in the world of corporate espionage but has also cost him everything he loves. Cobb gets a chance at redemption when he is of…"
           genres={["Action", "Adventure", "Sci-Fi"]}

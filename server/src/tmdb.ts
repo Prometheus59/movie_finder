@@ -37,7 +37,7 @@ function getMovieDetails(tmdb_id: number) {
     })
       .then((res: any) => {
         const movie: Movie = {
-          id: 0, // TODO: Must change this to the correct id
+          trakt_id: 0, // TODO: Must change this to the correct id
           title: res.data.title,
           year: res.data.release_date.split("-")[0],
           tmdb_id: tmdb_id,
