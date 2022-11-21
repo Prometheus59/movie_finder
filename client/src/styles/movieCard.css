@@ -1,3 +1,4 @@
+/* Styles for featured card */
 .feature-movie-card {
   position: relative;
   width: 720px;
@@ -5,7 +6,7 @@
   margin: 20px;
 }
 
-img {
+.feature-movie-card img {
   width: 720px;
   height: 438px;
   border-radius: 40px;
@@ -15,8 +16,6 @@ img {
   text-align: left;
   position: absolute;
   padding: 10px 20px 15px 20px;
-  /* bottom: 40px;
-  left: 20px; */
   left: 0px;
   bottom: 0px;
   border-bottom-left-radius: 40px;
@@ -56,4 +55,112 @@ img {
 .genres {
   font-size: 16px;
   color: #ffffff;
+}
+
+
+/* General Movie card styles */
+.movie-card {
+  position: relative;
+  width: 20em;
+  /* height: 11em; */
+  /* padding: 5px 8px 5px 4px; */
+  /* margin: 20px; */
+}
+
+.movie-card img {
+  width: 20em;
+  height: 11em;
+  padding: 5px 8px 5px 4px;
+  border-radius: 40px;
+}
+
+.movie-card.card-text {
+  width: 18em;
+  text-align: left;
+  position: absolute;
+  height: auto;
+  padding: 5px 15px 10px 15px;
+  left: 8px;
+  bottom: 5px;
+  margin: 0px;
+  text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black;
+  /* border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px; */
+}
+
+.movie-card.title {
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.movie-card.desc {
+  /* display: none; */
+  max-height: 0px;
+  transition: visibility 0.2s ease-out, opacity 0.5s ease-out, max-height 0.25s ease-out;
+  visibility: hidden;
+  opacity: 0;
+  font-size: 12.5px;
+  color: #ffffff;
+  margin-top: 10px;
+}
+
+/* Hover Effects */
+.movie-card:hover .desc {
+  transition: visibility 0.2s ease-in, opacity 0.5s linear max-height 0.25s ease-in;
+  /* display: block; */
+  max-height: 100px;
+  visibility: visible;
+  opacity: 1;
+}
+
+.movie-card:hover img {
+  filter: brightness(50%);
+}
+
+/* .movie-card.desc :hover {
+  display: inline-block;
+} */
+
+.movie-card.bottom-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  padding-right: 4px;
+  width: 100%;
+}
+
+.movie-card.movie-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* width: 70%; */
+  font-size: 12px;
+}
+
+.movie-card .runtime {
+  margin-left: 20px;
+}
+
+.movie-card.genres {
+  display: none;
+  font-size: 13px;
+  color: #ffffff;
+}
+
+.movie-card.btn-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.movie-card.details-btn {
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: 30px;
+  font-size: 12px;
+  background-color: darkgray;
 }
