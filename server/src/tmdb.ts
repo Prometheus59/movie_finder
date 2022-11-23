@@ -103,6 +103,35 @@ function getMovieInfo(tmdb_id) {
 
 // getMovieDetails(928344);
 
+function getPopularMovies() {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: `${tmdb_url}movie/popular?api_key=${process.env.TMDB_API_KEY}`,
+    })
+      .then((res: any) => {
+        const movies: Movie[] = [];
+        res.data.results.forEach((movie) => {
+          const movieObj: Movie = {
+            trakt_id: 0, // TODO: Must change this to the correct id
+            title: movie.title,
+            year: movie.release_date.split("-")[0],
+            tmdb_id: movie.id,
+            overview: movie.overview,
+            runtime: movie.popularity, //TODO: Must change this to actual runtime
+            providers: [],
+          };
+          movies.push(movieObj);
+        });
+        console.log(movies);
+        resolve(movies);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
 // con.end();
 
-export { getMovieInfo };
+export { getMovieInfo, getPopularMovies };

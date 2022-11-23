@@ -2,7 +2,7 @@ const express = require("express");
 // const bodyParser = require("body-parser");
 const cors = require("cors");
 import { getTrendingMovies, getMovies } from "./trakt";
-import { getMovieInfo } from "./tmdb";
+import { getMovieInfo, getPopularMovies } from "./tmdb";
 
 const app = express();
 
@@ -24,6 +24,13 @@ app.get("/trending", (req, res) => {
 app.get("/movies/:category", (req, res) => {
   const category = req.params.category;
   getMovies(category).then((movies) => {
+    res.json(movies);
+  });
+});
+
+app.get("/popular", (req, res) => {
+  // TODO: Add tv shows too
+  getPopularMovies().then((movies) => {
     res.json(movies);
   });
 });

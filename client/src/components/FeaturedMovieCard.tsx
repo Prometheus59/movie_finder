@@ -12,14 +12,13 @@ interface MovieCardProps {
 }
 
 export default function MovieCard(props: MovieCardProps) {
-
   const { tmdb_id, title, img, description, genres } = props;
   const movie_detail_url = `/movie/${tmdb_id}`;
   // console.log(`img: ${img}`);
 
   return (
     <div className="feature-movie-card">
-      <img src={props.img} alt="movie backdrop" />
+      <img src={img} alt="movie backdrop" />
       {/* <div className="colored" /> */}
       <div className="feature-movie-card-text">
         <div className="title">{title}</div>
@@ -40,9 +39,7 @@ export default function MovieCard(props: MovieCardProps) {
           </div>
           {/* //TODO: Map styles to above genres */}
           <button className="details">
-            <Link to={movie_detail_url}>
-              More details
-            </Link>
+            <Link to={movie_detail_url}>More details</Link>
           </button>
         </div>
       </div>

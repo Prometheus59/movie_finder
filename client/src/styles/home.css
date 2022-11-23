@@ -3,3 +3,10 @@
   background-color: #1d2024;
   margin: 15px 10px 15px 10px;
 }
+
+.movie-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
