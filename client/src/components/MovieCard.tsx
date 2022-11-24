@@ -3,6 +3,7 @@ import axios from "axios";
 import "../styles/movieCard.css";
 
 import { Link } from "react-router-dom";
+import { runtimeToHours, reduceText } from "../utils/processing";
 import Movie from "../types";
 
 interface MovieCardProps {
@@ -19,7 +20,7 @@ export default function MovieCard(props: MovieCardProps) {
   const { tmdb_id, title, year, class_name } = props;
 
   const movie_detail_url = `/movie/${tmdb_id}`;
-  const backdrop = `https://image.tmdb.org/t/p/original/`;
+  const backdrop_url_base = `https://image.tmdb.org/t/p/original/`;
 
   // request movie details for description, img, genres
   const [movie, setMovie] = useState<any>();
@@ -43,14 +44,16 @@ export default function MovieCard(props: MovieCardProps) {
   if (!movie) {
     return <h1>Loading...</h1>;
   } else {
-    console.log(`backdrop url string: ${backdrop + movie.backdrop_path}`);
     return (
       <div className={class_name}>
-        <img src={backdrop + movie.backdrop_path} alt="movie backdrop" />
+        <img
+          src={backdrop_url_base + movie.backdrop_path}
+          alt="movie backdrop"
+        />
         {/* <div className="colored" /> */}
         <div className={`card-text ${class_name}`}>
           <div className={`title ${class_name}`}>{title}</div>
-          <p className={`${class_name} desc`}>{movie.overview}</p>
+          <p className={`${class_name} desc`}>{reduceText(movie.overview)}</p>
           <div className={`bottom-text ${class_name}`}>
             <div className={`movie-info ${class_name}`}>
               <div>{year}</div>
@@ -63,7 +66,7 @@ export default function MovieCard(props: MovieCardProps) {
                 }
               })}
             </div> */}
-              <div className="runtime">{movie.runtime}</div>
+              <div className="runtime">{runtimeToHours(movie.runtime)}</div>
             </div>
             {/* //TODO: Map styles to above genres */}
             <div className="btn-container">

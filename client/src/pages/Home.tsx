@@ -11,7 +11,6 @@ function Home() {
 
   useEffect(() => {
     axios.get("http://localhost:8080/trending").then((res: any) => {
-      console.log(res);
       setPopular(res.data);
     });
   }, []);
@@ -49,6 +48,7 @@ function Home() {
           {popular?.map((movie: Movie) => {
             return (
               <MovieCard
+                key={movie.tmdb_id}
                 class_name="movie-card"
                 title={movie.title}
                 tmdb_id={movie.tmdb_id}

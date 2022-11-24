@@ -9,6 +9,8 @@ export default function MovieInfo() {
 
   const [movie, setMovie] = React.useState<Movie>();
 
+  const backdrop_url_base = `https://image.tmdb.org/t/p/original/`;
+
   React.useEffect(() => {
     axios.get("http://localhost:8080/movie/" + id).then((res: any) => {
       // console.log(`res.data is ${JSON.stringify(res.data)}`);
@@ -21,11 +23,30 @@ export default function MovieInfo() {
         runtime: res.data.runtime,
         // genres: res.data.genres,
         providers: res.data.providers,
+        backdrop_path: res.data.backdrop_path,
       });
-      console.log(`Movie providers: ${JSON.stringify(res.data.providers)}`);
+      // console.log(`Movie providers: ${JSON.stringify(res.data.providers)}`);
       // console.log(movie);
     });
   }, [id]);
+
+  let providers =
+    movie?.providers?.length !== 0 ? (
+      <div>
+        Watch Providers:{" "}
+        {movie?.providers?.map((provider: string) => {
+          // if last provider, don't add comma
+          if (provider === movie?.providers?.[movie?.providers?.length - 1]) {
+            return <span key={provider}>{provider}</span>;
+          } else {
+            // TODO: Add provider id to key
+            return <span key={provider}>{provider}, </span>;
+          }
+        })}
+      </div>
+    ) : (
+      <div>No providers found</div>
+    );
 
   if (movie) {
     return (
@@ -36,15 +57,11 @@ export default function MovieInfo() {
         <p>
           {movie.year} | Movie Runtime: {movie.runtime} mins
         </p>
-        <p>
-          Watch Providers:{" "}
-          {movie?.providers?.map((provider: string) => {
-            return (
-              // TODO: Add provider id to key
-              <span key={provider}>{provider}</span>
-            );
-          })}
-        </p>
+        {providers}
+        <img
+          src={backdrop_url_base + movie.backdrop_path}
+          alt="movie backdrop"
+        />
       </div>
     );
   } else {
