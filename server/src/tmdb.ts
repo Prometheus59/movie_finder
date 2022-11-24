@@ -43,6 +43,7 @@ function getMovieDetails(tmdb_id: number) {
           tmdb_id: tmdb_id,
           overview: res.data.overview,
           runtime: res.data.runtime,
+          backdrop_path: res.data.backdrop_path,
           providers: [],
         };
         resolve(movie);
@@ -92,7 +93,7 @@ function getMovieInfo(tmdb_id) {
       // TODO: Change below any type
       getWatchProviders(tmdb_id).then((providers: any) => {
         movie.providers = [];
-        providers.flatrate.forEach((provider) => {
+        providers?.flatrate?.forEach((provider) => {
           movie.providers.push(provider.provider_name);
         });
         resolve(movie);

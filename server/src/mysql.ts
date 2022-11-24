@@ -2,7 +2,7 @@ const mysql = require("mysql");
 import * as dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
-console.log(`password for mysql is ${process.env.MYSQL_PASSWORD}`);
+// console.log(`password for mysql is ${process.env.MYSQL_PASSWORD}`);
 
 const con = mysql.createConnection({
   host: "localhost",

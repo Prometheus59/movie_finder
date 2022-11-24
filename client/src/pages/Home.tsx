@@ -41,9 +41,9 @@ function Home() {
             title="Inception"
             tmdb_id={27205}
             year={2010}
-            img="https://media.wired.com/photos/59341d3286599a3834f7cf6c/master/pass/inception_paris_660.jpg"
-            description="Dom Cobb (Leonardo DiCaprio) is a thief with the rare ability to enter people's dreams and steal their secrets from their subconscious"
-            genres={["Action", "Adventure", "Sci-Fi"]}
+            // img="https://media.wired.com/photos/59341d3286599a3834f7cf6c/master/pass/inception_paris_660.jpg"
+            // description="Dom Cobb (Leonardo DiCaprio) is a thief with the rare ability to enter people's dreams and steal their secrets from their subconscious"
+            // genres={["Action", "Adventure", "Sci-Fi"]}
           />
           {/* Popular movie cards go here */}
           {popular?.map((movie: Movie) => {
@@ -53,9 +53,9 @@ function Home() {
                 title={movie.title}
                 tmdb_id={movie.tmdb_id}
                 year={movie.year}
-                img="https://media.wired.com/photos/59341d3286599a3834f7cf6c/master/pass/inception_paris_660.jpg"
-                description={movie.overview}
-                genres={["Action", "Adventure", "Sci-Fi"]}
+                // img="https://media.wired.com/photos/59341d3286599a3834f7cf6c/master/pass/inception_paris_660.jpg"
+                // description={movie.overview}
+                // genres={["Action", "Adventure", "Sci-Fi"]}
               />
             );
           })}
