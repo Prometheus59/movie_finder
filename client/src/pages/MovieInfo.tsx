@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+import "../styles/movieInfo.css";
+
 import Movie from "../types";
 
 export default function MovieInfo() {
@@ -21,7 +23,7 @@ export default function MovieInfo() {
         overview: res.data.overview,
         year: res.data.year,
         runtime: res.data.runtime,
-        // genres: res.data.genres,
+        genres: res.data.genres,
         providers: res.data.providers,
         backdrop_path: res.data.backdrop_path,
       });
@@ -50,19 +52,27 @@ export default function MovieInfo() {
 
   if (movie) {
     return (
-      <div>
-        <h1>{movie.title}</h1>
-        <p></p>
-        <p>{movie.overview}</p>
-        <p>
-          {movie.year} | Movie Runtime: {movie.runtime} mins
-        </p>
-        {providers}
-        <img
-          src={backdrop_url_base + movie.backdrop_path}
-          alt="movie backdrop"
-        />
-      </div>
+      <>
+        <div>
+          <h1>{movie.title}</h1>
+          <p></p>
+          <p>{movie.overview}</p>
+          <p>
+            {movie.year} | Movie Runtime: {movie.runtime} mins
+          </p>
+          {providers}
+          <button>Add to watchlist</button>
+          <button>Hide from recommendations</button>
+          <img
+            src={backdrop_url_base + movie.backdrop_path}
+            alt="movie backdrop"
+          />
+        </div>
+        <div>
+          <div>Gallery:</div>
+          <div>Cast</div>
+        </div>
+      </>
     );
   } else {
     return <h1>Loading...</h1>;

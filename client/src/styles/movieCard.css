@@ -57,7 +57,6 @@
   color: #ffffff;
 }
 
-
 /* General Movie card styles */
 .movie-card {
   position: relative;
@@ -96,7 +95,8 @@
 .movie-card.desc {
   /* display: none; */
   max-height: 0px;
-  transition: visibility 0.2s ease-out, opacity 0.5s ease-out, max-height 0.25s ease-out;
+  transition: visibility 0.2s ease-out, opacity 0.1s ease-out,
+    max-height 0.25s ease-out;
   visibility: hidden;
   opacity: 0;
   font-size: 12.5px;
@@ -106,7 +106,8 @@
 
 /* Hover Effects */
 .movie-card:hover .desc {
-  transition: visibility 0.2s ease-in, opacity 0.5s linear max-height 0.25s ease-in;
+  transition: visibility 0.2s ease-in, opacity 0.5s linear,
+    max-height 0.25s ease-out;
   /* display: block; */
   max-height: 100px;
   visibility: visible;

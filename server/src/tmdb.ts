@@ -85,6 +85,46 @@ function getWatchProviders(tmdb_id) {
 // });
 
 /**
+ * Function to get a movie's videos
+ * @param tmdb_id
+ * @returns Promise with an array of videos
+ * @example
+ * getVideos(550).then((res) => {
+ * console.log(res);
+ * });
+ *
+ * Response from api: [ { id: '5c9a9b4c0e0a264a3e0b8d0b',
+ * iso_639_1: 'en',
+ * iso_3166_1: 'US',
+ * key: 'SUXWAEX2jlg',
+ * name: 'Fight Club - Official Trailer',
+ * site: 'YouTube',
+ * size: 1080,
+ * type: 'Trailer' } ]
+ *
+ * Result: SUXWAEX2jlg
+ */
+function getVideos(tmdb_id) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: `${tmdb_url}movie/${tmdb_id}/videos?api_key=${process.env.TMDB_API_KEY}`,
+    })
+      .then((res: any) => {
+        const video_key = res.data.results[0].key;
+        console.log(video_key);
+        // Append video key to this url "https://www.youtube.com/watch?v="
+        resolve(video_key);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+getVideos(550);
+
+/**
  * Get movie's details and then get the watch providers
  */
 function getMovieInfo(tmdb_id) {
@@ -121,6 +161,7 @@ function getPopularMovies() {
             overview: movie.overview,
             runtime: movie.popularity, //TODO: Must change this to actual runtime
             providers: [],
+            // collection: "" -> Null or object
           };
           movies.push(movieObj);
         });
