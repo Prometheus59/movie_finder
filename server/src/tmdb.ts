@@ -112,7 +112,6 @@ function getVideos(tmdb_id) {
     })
       .then((res: any) => {
         const video_key = res.data.results[0].key;
-        console.log(video_key);
         // Append video key to this url "https://www.youtube.com/watch?v="
         resolve(video_key);
       })
@@ -121,8 +120,35 @@ function getVideos(tmdb_id) {
       });
   });
 }
+// getVideos(550);
 
-getVideos(550);
+/**
+ * Function to get a movie's cast
+ * @param tmdb_id - The movie's tmdb id
+ * @returns list of cast members
+ */
+function getCast(tmdb_id) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: `${tmdb_url}movie/${tmdb_id}/credits?api_key=${process.env.TMDB_API_KEY}`,
+    }).then((res: any) => {
+      const cast = res.data.cast;
+      let movie_cast = [];
+
+      cast.forEach((member) => {
+        movie_cast.push({
+          name: member.name,
+          character: member.character,
+        });
+      });
+      // movie_cast.forEach((member) => console.log(member.name));
+      resolve(cast);
+    });
+  });
+}
+
+// getCast(550);
 
 /**
  * Get movie's details and then get the watch providers
