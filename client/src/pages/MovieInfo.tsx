@@ -53,16 +53,21 @@ export default function MovieInfo() {
   if (movie) {
     return (
       <>
-        <div>
-          <h1>{movie.title}</h1>
-          <p></p>
-          <p>{movie.overview}</p>
-          <p>
-            {movie.year} | Movie Runtime: {movie.runtime} mins
-          </p>
-          {providers}
-          <button>Add to watchlist</button>
-          <button>Hide from recommendations</button>
+        <div className="movieInfo">
+          <div className="info">
+            <h1>{movie.title}</h1>
+            <p></p>
+            <p>{movie.overview}</p>
+            <p>
+              {movie.year} | Movie Runtime: {movie.runtime} mins
+            </p>
+            {providers}
+          </div>
+          <div className="buttons">
+            <button>Add to watchlist</button>
+            <button>Hide from recommendations</button>
+          </div>
+          {/* // TODO: add movie poster image instead of backdrop */}
           <img
             src={backdrop_url_base + movie.backdrop_path}
             alt="movie backdrop"

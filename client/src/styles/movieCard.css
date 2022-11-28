@@ -61,6 +61,7 @@
 .movie-card {
   position: relative;
   width: 20em;
+  overflow: hidden;
   /* height: 11em; */
   /* padding: 5px 8px 5px 4px; */
   /* margin: 20px; */
@@ -109,7 +110,7 @@
   transition: visibility 0.2s ease-in, opacity 0.5s linear,
     max-height 0.25s ease-out;
   /* display: block; */
-  max-height: 100px;
+  max-height: 120px;
   visibility: visible;
   opacity: 1;
 }
