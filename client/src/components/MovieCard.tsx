@@ -4,7 +4,7 @@ import "../styles/movieCard.css";
 
 import { Link } from "react-router-dom";
 import { runtimeToHours, reduceText } from "../utils/processing";
-import Movie from "../types";
+// import Movie from "../types";
 
 interface MovieCardProps {
   class_name: string;

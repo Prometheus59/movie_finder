@@ -11,7 +11,8 @@ export default function MovieInfo() {
 
   const [movie, setMovie] = React.useState<Movie>();
 
-  const backdrop_url_base = `https://image.tmdb.org/t/p/original/`;
+  // const backdrop_url_base = `https://image.tmdb.org/t/p/original/`;
+  const poster_url_base = "https://image.tmdb.org/t/p/w500/";
 
   React.useEffect(() => {
     axios.get("http://localhost:8080/movie/" + id).then((res: any) => {
@@ -25,7 +26,8 @@ export default function MovieInfo() {
         runtime: res.data.runtime,
         genres: res.data.genres,
         providers: res.data.providers,
-        backdrop_path: res.data.backdrop_path,
+        // backdrop_path: res.data.backdrop_path,
+        poster_path: res.data.poster_path,
       });
       // console.log(`Movie providers: ${JSON.stringify(res.data.providers)}`);
       // console.log(movie);
@@ -52,8 +54,9 @@ export default function MovieInfo() {
 
   if (movie) {
     return (
-      <>
+      <div className="movieInfoContainer">
         <div className="movieInfo">
+          <img src={poster_url_base + movie.poster_path} alt="movie poster" />
           <div className="info">
             <h1>{movie.title}</h1>
             <p></p>
@@ -62,22 +65,17 @@ export default function MovieInfo() {
               {movie.year} | Movie Runtime: {movie.runtime} mins
             </p>
             {providers}
+            <div className="buttons">
+              <button>Add to watchlist</button>
+              <button>Hide from recommendations</button>
+            </div>
+            <div>
+              <div>Gallery:</div>
+              <div>Cast</div>
+            </div>
           </div>
-          <div className="buttons">
-            <button>Add to watchlist</button>
-            <button>Hide from recommendations</button>
-          </div>
-          {/* // TODO: add movie poster image instead of backdrop */}
-          <img
-            src={backdrop_url_base + movie.backdrop_path}
-            alt="movie backdrop"
-          />
         </div>
-        <div>
-          <div>Gallery:</div>
-          <div>Cast</div>
-        </div>
-      </>
+      </div>
     );
   } else {
     return <h1>Loading...</h1>;

@@ -8,4 +8,7 @@ export default interface Movie {
   genres?: string[]; // List of genres
   providers?: string[]; // Streaming providers
   backdrop_path?: string;
+  poster_path?: string;
 }
+
+// NOTE: Any changes here need to be changed in the server as well (src/types.ts)

@@ -44,8 +44,10 @@ function getMovieDetails(tmdb_id: number) {
           overview: res.data.overview,
           runtime: res.data.runtime,
           backdrop_path: res.data.backdrop_path,
+          poster_path: res.data.poster_path,
           providers: [],
         };
+        console.log(movie);
         resolve(movie);
       })
       .catch((err) => {

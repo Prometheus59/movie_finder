@@ -7,4 +7,5 @@ export interface Movie {
   runtime?: number; // In minutes -> Optional
   providers?: string[]; // Streaming providers-> Optional
   backdrop_path?: string; // Optional
+  poster_path?: string; // Optional
 }
