@@ -119,10 +119,6 @@
   filter: brightness(50%);
 }
 
-/* .movie-card.desc :hover {
-  display: inline-block;
-} */
-
 .movie-card.bottom-text {
   display: flex;
   justify-content: space-between;

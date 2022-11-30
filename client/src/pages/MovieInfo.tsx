@@ -59,19 +59,19 @@ export default function MovieInfo() {
           <img src={poster_url_base + movie.poster_path} alt="movie poster" />
           <div className="info">
             <h1>{movie.title}</h1>
-            <p></p>
+
             <p>{movie.overview}</p>
             <p>
               {movie.year} | Movie Runtime: {movie.runtime} mins
             </p>
             {providers}
+            <div>
+              {/* <div>Gallery:</div> */}
+              <div>Cast</div>
+            </div>
             <div className="buttons">
               <button>Add to watchlist</button>
               <button>Hide from recommendations</button>
-            </div>
-            <div>
-              <div>Gallery:</div>
-              <div>Cast</div>
             </div>
           </div>
         </div>
