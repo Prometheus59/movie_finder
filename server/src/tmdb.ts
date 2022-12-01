@@ -47,7 +47,7 @@ function getMovieDetails(tmdb_id: number) {
           poster_path: res.data.poster_path,
           providers: [],
         };
-        console.log(movie);
+        console.log(`${movie.title} details retrieved`);
         resolve(movie);
       })
       .catch((err) => {
@@ -193,7 +193,7 @@ function getPopularMovies() {
           };
           movies.push(movieObj);
         });
-        console.log(movies);
+        console.log(movies.map((movie) => movie.title));
         resolve(movies);
       })
       .catch((err) => {

@@ -38,9 +38,9 @@ export default function MovieCard(props: MovieCardProps) {
             <div className="runtime">1 h 30 min</div>
           </div>
           {/* //TODO: Map styles to above genres */}
-          <button className="details">
-            <Link to={movie_detail_url}>More details</Link>
-          </button>
+          <Link to={movie_detail_url}>
+            <button className="details">More details</button>
+          </Link>
         </div>
       </div>
     </div>

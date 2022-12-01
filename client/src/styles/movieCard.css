@@ -57,11 +57,21 @@
   color: #ffffff;
 }
 
+.details {
+  background-color: #292c31;
+  color: white;
+}
+
+.details:hover {
+  background-color: #f37515;
+  color: white;
+}
+
 /* General Movie card styles */
 .movie-card {
   position: relative;
   width: 20em;
-  overflow: hidden;
+  /* overflow: hidden; */
   /* height: 11em; */
   /* padding: 5px 8px 5px 4px; */
   /* margin: 20px; */
@@ -75,6 +85,7 @@
 }
 
 .movie-card.card-text {
+  overflow: hidden;
   width: 18em;
   text-align: left;
   position: absolute;
@@ -103,6 +114,7 @@
   font-size: 12.5px;
   color: #ffffff;
   margin-top: 10px;
+  overflow: hidden;
 }
 
 /* Hover Effects */
@@ -160,5 +172,12 @@
   width: auto;
   height: 30px;
   font-size: 12px;
-  background-color: darkgray;
+  background-color: #292c31;
+  color: white;
+  padding: 5px 10px 5px 10px;
+  border: none;
+}
+
+.movie-card.details-btn:hover {
+  background-color: #f37515;
 }

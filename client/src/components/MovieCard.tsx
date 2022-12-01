@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Lottie from "react-lottie";
+import loadingAnimation from "../animations/loadingAnimation.json";
 import "../styles/movieCard.css";
 
 import { Link } from "react-router-dom";
@@ -15,6 +17,16 @@ interface MovieCardProps {
   // description: string;
   // genres: string[];
 }
+
+// Options for Lottie animations
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: loadingAnimation,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
 
 export default function MovieCard(props: MovieCardProps) {
   const { tmdb_id, title, year, class_name } = props;
@@ -42,7 +54,11 @@ export default function MovieCard(props: MovieCardProps) {
   }, [tmdb_id, title, year]);
 
   if (!movie) {
-    return <h1>Loading...</h1>;
+    return (
+      <div>
+        <Lottie options={defaultOptions} height={300} width={300} />
+      </div>
+    );
   } else {
     return (
       <div className={class_name}>
@@ -70,9 +86,11 @@ export default function MovieCard(props: MovieCardProps) {
             </div>
             {/* //TODO: Map styles to above genres */}
             <div className="btn-container">
-              <button className={`details-btn ${class_name}`}>
-                <Link to={movie_detail_url}>More details</Link>
-              </button>
+              <Link to={movie_detail_url}>
+                <button className={`details-btn ${class_name}`}>
+                  More details
+                </button>
+              </Link>
             </div>
           </div>
         </div>

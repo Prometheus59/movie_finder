@@ -1,6 +1,6 @@
 {
   "name": "movie_finder",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -44,6 +44,8 @@
   "devDependencies": {
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.8"
+    "@types/react-dom": "^18.0.8",
+    "@types/react-lottie": "^1.2.6",
+    "react-lottie": "^1.2.3"
   }
 }

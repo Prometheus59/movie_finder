@@ -15,7 +15,7 @@ export default function Movies() {
 
   useEffect(() => {
     axios.get(`http://localhost:8080/movies/${category}`).then((res: any) => {
-      console.log(res);
+      // console.log(res);
       setMovies(res.data);
     });
   }, [category]);

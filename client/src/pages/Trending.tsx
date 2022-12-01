@@ -13,7 +13,7 @@ function Trending() {
 
   useEffect(() => {
     axios.get("http://localhost:8080/trending").then((res: any) => {
-      console.log(res);
+      // console.log(res);
       setTrending(res.data);
     });
   }, []);
