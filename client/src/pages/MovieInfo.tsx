@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 
 import "../styles/movieInfo.css";
 
+// Import images for watch providers
+import { getWatchProviderLogo } from "../utils/watch_providers";
+
 import Movie from "../types";
 
 export default function MovieInfo() {
@@ -39,6 +42,13 @@ export default function MovieInfo() {
       <div>
         Watch Providers:{" "}
         {movie?.providers?.map((provider: string) => {
+          const logo = getWatchProviderLogo(provider);
+          if (logo) {
+            return (
+              <img src={logo} alt={provider} className="watch-provider-logo" />
+            );
+          }
+
           // if last provider, don't add comma
           if (provider === movie?.providers?.[movie?.providers?.length - 1]) {
             return <span key={provider}>{provider}</span>;

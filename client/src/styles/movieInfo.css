@@ -21,6 +21,12 @@ img {
   align-items: left;
 }
 
+.watch-provider-logo {
+  width: 100px;
+  height: auto;
+  margin: 0 10px 0 10px;
+}
+
 .buttons {
   display: flex;
   flex-direction: row;

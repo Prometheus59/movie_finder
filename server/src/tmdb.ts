@@ -9,14 +9,6 @@ const con = require("./mysql");
 require("dotenv").config();
 // dotenv.config({ path: "../.env" });
 
-// interface Movie {
-//   title: string;
-//   year: number;
-//   tmdb_id: number;
-//   overview: string; // Movie description
-//   runtime: number; // In minutes
-// }
-
 const tmdb_url = "https://api.themoviedb.org/3/";
 
 /**
@@ -73,7 +65,8 @@ function getWatchProviders(tmdb_id) {
       url: `${tmdb_url}movie/${tmdb_id}/watch/providers?api_key=${process.env.TMDB_API_KEY}`,
     })
       .then((res: any) => {
-        const providers = res.data.results.US;
+        const providers = res.data.results.CA;
+        // console.log(`providers are ${JSON.stringify(providers)}`);
         resolve(providers);
       })
       .catch((err) => {
