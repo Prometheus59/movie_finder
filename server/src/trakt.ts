@@ -42,10 +42,16 @@ function getTrendingMovies(quantity: number = 25) {
 
 // getTrendingMovies();
 
-type category = "trending" | "popular" | "anticipated" | "boxoffice";
+type category =
+  | "trending"
+  | "popular"
+  | "anticipated"
+  | "boxoffice"
+  | "watched"
+  | "played";
 
 // Function to get a list of movies with different categories
-function getMovies(category: string, quantity: number = 25) {
+function getMovies(category: category, quantity: number = 25) {
   return new Promise((resolve, reject) => {
     axios({
       method: "get",
@@ -58,14 +64,28 @@ function getMovies(category: string, quantity: number = 25) {
     })
       .then((res: any) => {
         const movies = res.data;
+
         let movieList: Movie[] = [];
-        for (let i = 0; i < movies.length; i++) {
-          movieList.push({
-            title: movies[i].movie.title,
-            year: movies[i].movie.year,
-            trakt_id: movies[i].movie.ids.trakt,
-            tmdb_id: movies[i].movie.ids.tmdb,
-          });
+
+        // Note: popular has a different structure than the other categories
+        if (category === "popular") {
+          for (let i = 0; i < movies.length; i++) {
+            movieList.push({
+              title: movies[i].title,
+              year: movies[i].year,
+              trakt_id: movies[i].ids.trakt,
+              tmdb_id: movies[i].ids.tmdb,
+            });
+          }
+        } else {
+          for (let i = 0; i < movies.length; i++) {
+            movieList.push({
+              title: movies[i].movie.title,
+              year: movies[i].movie.year,
+              trakt_id: movies[i].movie.ids.trakt,
+              tmdb_id: movies[i].movie.ids.tmdb,
+            });
+          }
         }
         // console.log(`Movies list is ${JSON.stringify(movieList)}`);
         resolve(movieList);

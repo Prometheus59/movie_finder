@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import MovieCard from "../components/MovieCard";
+import "../styles/movieCard.css";
+import "../styles/home.css";
 
 interface Movie {
   id: number;
   title: string;
   year: number;
-  tmdbId: number;
+  tmdb_id: number;
 }
 
 export default function Movies() {
   const [movies, setMovies] = useState<Movie[]>();
-
-  let category = "trending";
+  const [category, setCategory] = useState("trending");
 
   useEffect(() => {
     axios.get(`http://localhost:8080/movies/${category}`).then((res: any) => {
@@ -22,16 +24,29 @@ export default function Movies() {
 
   return (
     <div>
-      <h1>
-        {movies?.map((movie) => {
+      <div>
+        <h2>Categories:</h2>
+        {/* //TODO: Highlight last clicked button */}
+        <button onClick={() => setCategory("trending")}>Trending</button>
+        <button onClick={() => setCategory("popular")}>Popular</button>
+        <button onClick={() => setCategory("anticipated")}>Anticipated</button>
+        <button onClick={() => setCategory("boxoffice")}>Box Office</button>
+        <button onClick={() => setCategory("watched")}>Most Watched</button>
+        <button onClick={() => setCategory("played")}>Played</button>
+      </div>
+      <div className="movie-card-container">
+        {movies?.map((movie: Movie) => {
           return (
-            <div key={movie.id}>
-              <h5>{movie.title}</h5>
-              <p>{movie.year}</p>
-            </div>
+            <MovieCard
+              key={movie.tmdb_id}
+              class_name="movie-card"
+              title={movie.title}
+              tmdb_id={movie.tmdb_id}
+              year={movie.year}
+            />
           );
         })}
-      </h1>
+      </div>
     </div>
   );
 }
