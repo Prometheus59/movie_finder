@@ -45,7 +45,12 @@ export default function MovieInfo() {
           const logo = getWatchProviderLogo(provider);
           if (logo) {
             return (
-              <img src={logo} alt={provider} className="watch-provider-logo" />
+              <img
+                key={provider}
+                src={logo}
+                alt={provider}
+                className="watch-provider-logo"
+              />
             );
           }
 
@@ -66,7 +71,11 @@ export default function MovieInfo() {
     return (
       <div className="movieInfoContainer">
         <div className="movieInfo">
-          <img src={poster_url_base + movie.poster_path} alt="movie poster" />
+          <img
+            src={poster_url_base + movie.poster_path}
+            alt="movie poster"
+            className="movie-poster"
+          />
           <div className="info">
             <h1>{movie.title}</h1>
 
@@ -76,6 +85,7 @@ export default function MovieInfo() {
             </p>
             {providers}
             <div>
+              <p></p>
               {/* <div>Gallery:</div> */}
               <div>Cast</div>
             </div>
