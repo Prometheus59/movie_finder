@@ -31,9 +31,15 @@ function runtimeToHours(runtime: number) {
  * });
  * Output: A ticking-time-bomb
  */
-function reduceText(text: string, length: number = 300) {
+function reduceText(text: string, length: number = 350) {
   const reducedText = text.substring(0, length);
-  return reducedText.substring(0, reducedText.lastIndexOf("."));
+  const summary = reducedText.substring(0, reducedText.lastIndexOf("."));
+  if (summary.length > 0) {
+    return summary;
+  } else {
+    return reducedText.substring(0, reducedText.lastIndexOf(";"));
+  }
+  // Create another else statement, if text is too short return as much text as possible (without cutting words) and add "..."
 }
 
 export { runtimeToHours, reduceText };

@@ -1,7 +1,7 @@
 const express = require("express");
 // const bodyParser = require("body-parser");
 const cors = require("cors");
-import { getTrendingMovies, getMovies, getShows } from "./trakt";
+import { getMovies, getShows } from "./trakt";
 import { getMovieInfo, getTvShowDetails } from "./tmdb";
 
 const app = express();
@@ -11,13 +11,6 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to the find movie application" });
-});
-
-// Basic get routes
-app.get("/trending", (req, res) => {
-  getTrendingMovies().then((movies) => {
-    res.json(movies);
-  });
 });
 
 // Create route to get movie with parameters for categories

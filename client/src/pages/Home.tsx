@@ -10,7 +10,7 @@ function Home() {
   const [popular, setPopular] = useState<Movie[]>();
 
   useEffect(() => {
-    axios.get("http://localhost:8080/trending").then((res: any) => {
+    axios.get("http://localhost:8080/movies/trending").then((res: any) => {
       setPopular(res.data);
     });
   }, []);
@@ -18,7 +18,6 @@ function Home() {
   return (
     <>
       <div>
-        {/* Genre buttons go here */}
         <button className="genre-button highlight">Action</button>
         <button className="genre-button">Comedy</button>
         <button className="genre-button">Drama</button>

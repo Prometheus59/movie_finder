@@ -1,10 +1,12 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
+import Search from "./Search";
+
 import "../styles/navbar.css";
 
 const logo = require("../images/favicon.ico");
-const searchIcon = require("../images/search_icon.png");
+// const searchIcon = require("../images/search_icon.png");
 
 function Navbar() {
   return (
@@ -14,7 +16,8 @@ function Navbar() {
           <img id="logo" src={logo} alt="WatchIt Logo" />
         </Link>
 
-        <img id="search-icon" src={searchIcon} alt="Search Icon" />
+        {/* <img id="search-icon" src={searchIcon} alt="Search Icon" /> */}
+        <Search />
 
         <nav>
           <div className="media-types">
@@ -39,9 +42,6 @@ function Navbar() {
           </div>
         </nav>
       </div>
-
-      <Link to="/trending">Trending</Link>
-      {/* //TODO: Make above a dropdown? */}
 
       <div className="navbar-right">
         {/* Change below items to icons/dropdowns */}

@@ -7,40 +7,6 @@ const con = require("./mysql");
 // console.log(`password for app.ts is ${process.env.MYSQL_PASSWORD}`);
 
 import { Movie } from "./types";
-/**
- * Function to get trending movies and save response to a file
- */
-function getTrendingMovies(quantity: number = 25) {
-  return new Promise((resolve, reject) => {
-    axios({
-      method: "get",
-      url: "https://api.trakt.tv/movies/trending?limit=${quantity}",
-      headers: {
-        "Content-Type": "application/json",
-        "trakt-api-version": "2",
-        "trakt-api-key": process.env.CLIENT_ID,
-      },
-    })
-      .then((res: any) => {
-        const trendingMovies = res.data;
-        let movies: Movie[] = [];
-        for (let i = 0; i < trendingMovies.length; i++) {
-          movies.push({
-            title: trendingMovies[i].movie.title,
-            year: trendingMovies[i].movie.year,
-            trakt_id: trendingMovies[i].movie.ids.trakt,
-            tmdb_id: trendingMovies[i].movie.ids.tmdb,
-          });
-        }
-        resolve(movies);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-}
-
-// getTrendingMovies();
 
 type movie_category =
   | "trending"
@@ -125,13 +91,26 @@ function getShows(category: tv_category, quantity: number = 25) {
       .then((res: any) => {
         const shows = res.data;
         let showList: Movie[] = [];
-        for (let i = 0; i < shows.length; i++) {
-          showList.push({
-            title: shows[i].show.title,
-            year: shows[i].show.year,
-            trakt_id: shows[i].show.ids.trakt,
-            tmdb_id: shows[i].show.ids.tmdb,
-          });
+
+        // Note: popular has a different structure than the other categories
+        if (category === "popular") {
+          for (let i = 0; i < shows.length; i++) {
+            showList.push({
+              title: shows[i].title,
+              year: shows[i].year,
+              trakt_id: shows[i].ids.trakt,
+              tmdb_id: shows[i].ids.tmdb,
+            });
+          }
+        } else {
+          for (let i = 0; i < shows.length; i++) {
+            showList.push({
+              title: shows[i].show.title,
+              year: shows[i].show.year,
+              trakt_id: shows[i].show.ids.trakt,
+              tmdb_id: shows[i].show.ids.tmdb,
+            });
+          }
         }
         // console.log(showList);
         resolve(showList);
@@ -142,7 +121,7 @@ function getShows(category: tv_category, quantity: number = 25) {
   });
 }
 
-getShows("trending", 10);
+// getShows("trending", 10);
 
 /**
  * Function to authenticate a user
@@ -375,7 +354,7 @@ function recommendMovies(movie_category) {
       Ids = movieIds;
     })
     .then(() => {
-      return getTrendingMovies();
+      return getMovies("trending", 10);
     })
     .then((trendingMovies: any[]) => {
       let movies: Movie[] = [];
@@ -404,10 +383,4 @@ function recommendMovies(movie_category) {
 // con.end();
 // recommendMovies("trending");
 
-export {
-  getTrendingMovies,
-  getMovieSummary,
-  recommendMovies,
-  getMovies,
-  getShows,
-};
+export { getMovieSummary, recommendMovies, getMovies, getShows };
