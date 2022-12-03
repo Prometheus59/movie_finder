@@ -8,7 +8,8 @@ import Movies from "./pages/Movies";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import MovieInfo from "./pages/MovieInfo";
-import Tv from "./pages/Tv";
+import Shows from "./pages/Shows";
+import ShowInfo from "./pages/ShowInfo";
 
 const Main = () => {
   return (
@@ -18,8 +19,9 @@ const Main = () => {
       <Route path="/settings" element={<Settings />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/movies" element={<Movies />} />
-      <Route path="/tv" element={<Tv />} />
+      <Route path="/tv" element={<Shows />} />
       <Route path="/movie/:id" element={<MovieInfo />} />
+      <Route path="/tv/:id" element={<ShowInfo />} />
     </Routes>
   );
 };

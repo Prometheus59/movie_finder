@@ -34,7 +34,7 @@ export default function ShowCard(props: ShowCardProps) {
   const [show, setShow] = useState<any>();
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/tv/${tmdb_id}`).then((res: any) => {
+    axios.get(`http://localhost:8080/show/${tmdb_id}`).then((res: any) => {
       setShow({
         // id: 0,
         tmdb_id: tmdb_id,

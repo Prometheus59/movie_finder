@@ -11,4 +11,17 @@ export default interface Movie {
   poster_path?: string;
 }
 
+export default interface Show {
+  id?: number;
+  title: string;
+  year: number;
+  tmdb_id: number;
+  overview?: string; // Show description
+  runtime?: number; // Average runtime, in minutes
+  genres?: string[]; // List of genres
+  providers?: string[]; // Streaming providers
+  backdrop_path?: string;
+  poster_path?: string;
+}
+
 // NOTE: Any changes here need to be changed in the server as well (src/types.ts)

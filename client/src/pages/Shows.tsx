@@ -10,7 +10,7 @@ interface Show {
   tmdb_id: number;
 }
 
-export default function Tv() {
+export default function Shows() {
   const [shows, setShows] = useState<Show[]>();
   const [category, setCategory] = useState("trending");
 
