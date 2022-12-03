@@ -1,6 +1,7 @@
 import axios from "axios";
 // import * as dotenv from "dotenv";
 // import * as fs from "fs";
+import { getAverageRuntime } from "./utils";
 import { Movie } from "./types";
 
 // import database connection
@@ -78,6 +79,46 @@ function getWatchProviders(tmdb_id) {
 // getWatchProviders(550).then((res) => {
 //   console.log(res);
 // });
+
+/**
+ * Function to get a tv show's details
+ * @param tmdb_id
+ * @returns Promise with a tv show object
+ * @example
+ * getTvShowDetails(1399).then((res) => {
+ * console.log(res);
+ * });
+ * Output: { title: 'Game of Thrones', year: 2011, tmdb_id: 1399, overview: 'Nine noble families fight for control over the mythical lands of Westeros, while an ancient enemy returns after being dormant for thousands of years.', runtime: 60 }
+ */
+function getTvShowDetails(tmdb_id) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: `${tmdb_url}tv/${tmdb_id}?api_key=${process.env.TMDB_API_KEY}`,
+    })
+      .then((res: any) => {
+        const tvShow: Movie = {
+          trakt_id: 0, // TODO: Must change this to the correct id
+          title: res.data.name,
+          year: res.data.first_air_date.split("-")[0],
+          tmdb_id: tmdb_id,
+          overview: res.data.overview,
+          runtime: getAverageRuntime(res.data.episode_run_time),
+          backdrop_path: res.data.backdrop_path,
+          poster_path: res.data.poster_path,
+          providers: [],
+        };
+        console.log(`${tvShow.title} details retrieved`);
+        // console.log(res.data.episode_run_time);
+        resolve(tvShow);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+//TODO: Add function to consolidate tv show providers with the rest of the show info
 
 /**
  * Function to get a movie's videos
@@ -165,36 +206,36 @@ function getMovieInfo(tmdb_id) {
 
 // getMovieDetails(928344);
 
-function getPopularMovies() {
-  return new Promise((resolve, reject) => {
-    axios({
-      method: "get",
-      url: `${tmdb_url}movie/popular?api_key=${process.env.TMDB_API_KEY}`,
-    })
-      .then((res: any) => {
-        const movies: Movie[] = [];
-        res.data.results.forEach((movie) => {
-          const movieObj: Movie = {
-            trakt_id: 0, // TODO: Must change this to the correct id
-            title: movie.title,
-            year: movie.release_date.split("-")[0],
-            tmdb_id: movie.id,
-            overview: movie.overview,
-            runtime: movie.popularity, //TODO: Must change this to actual runtime
-            providers: [],
-            // collection: "" -> Null or object
-          };
-          movies.push(movieObj);
-        });
-        console.log(movies.map((movie) => movie.title));
-        resolve(movies);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-}
+// function getPopularMovies() {
+//   return new Promise((resolve, reject) => {
+//     axios({
+//       method: "get",
+//       url: `${tmdb_url}movie/popular?api_key=${process.env.TMDB_API_KEY}`,
+//     })
+//       .then((res: any) => {
+//         const movies: Movie[] = [];
+//         res.data.results.forEach((movie) => {
+//           const movieObj: Movie = {
+//             trakt_id: 0, // TODO: Must change this to the correct id
+//             title: movie.title,
+//             year: movie.release_date.split("-")[0],
+//             tmdb_id: movie.id,
+//             overview: movie.overview,
+//             runtime: movie.popularity, //TODO: Must change this to actual runtime
+//             providers: [],
+//             // collection: "" -> Null or object
+//           };
+//           movies.push(movieObj);
+//         });
+//         console.log(movies.map((movie) => movie.title));
+//         resolve(movies);
+//       })
+//       .catch((err) => {
+//         reject(err);
+//       });
+//   });
+// }
 
 // con.end();
 
-export { getMovieInfo, getPopularMovies };
+export { getMovieInfo, getTvShowDetails };

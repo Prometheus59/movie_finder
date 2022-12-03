@@ -10,8 +10,14 @@
  */
 function runtimeToHours(runtime: number) {
   const hours = Math.floor(runtime / 60);
-  const minutes = runtime % 60;
-  return `${hours}h ${minutes}m`;
+  const minutes = Math.round(runtime % 60);
+  if (hours === 0 && minutes === 0) {
+    return "N/A";
+  } else if (hours === 0) {
+    return `${minutes} mins`;
+  } else {
+    return `${hours}h ${minutes}m`;
+  }
 }
 
 /**

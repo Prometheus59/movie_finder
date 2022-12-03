@@ -2,7 +2,7 @@ const express = require("express");
 // const bodyParser = require("body-parser");
 const cors = require("cors");
 import { getTrendingMovies, getMovies, getShows } from "./trakt";
-import { getMovieInfo, getPopularMovies } from "./tmdb";
+import { getMovieInfo, getTvShowDetails } from "./tmdb";
 
 const app = express();
 
@@ -29,16 +29,9 @@ app.get("/movies/:category", (req, res) => {
 });
 
 // Create route to get tv shows with parameters for categories
-app.get("/tv/:category", (req, res) => {
+app.get("/shows/:category", (req, res) => {
   const category = req.params.category;
   getShows(category).then((movies) => {
-    res.json(movies);
-  });
-});
-
-app.get("/popular", (req, res) => {
-  // TODO: Add tv shows too
-  getPopularMovies().then((movies) => {
     res.json(movies);
   });
 });
@@ -46,6 +39,13 @@ app.get("/popular", (req, res) => {
 app.get("/movie/:tmdb_id", (req, res) => {
   const tmdb_id = req.params.tmdb_id;
   getMovieInfo(tmdb_id).then((movie) => {
+    res.json(movie);
+  });
+});
+
+app.get("/tv/:tmdb_id", (req, res) => {
+  const tmdb_id = req.params.tmdb_id;
+  getTvShowDetails(tmdb_id).then((movie) => {
     res.json(movie);
   });
 });
