@@ -42,7 +42,7 @@ function getTrendingMovies(quantity: number = 25) {
 
 // getTrendingMovies();
 
-type category =
+type movie_category =
   | "trending"
   | "popular"
   | "anticipated"
@@ -51,7 +51,7 @@ type category =
   | "played";
 
 // Function to get a list of movies with different categories
-function getMovies(category: category, quantity: number = 25) {
+function getMovies(category: movie_category, quantity: number = 25) {
   return new Promise((resolve, reject) => {
     axios({
       method: "get",
@@ -97,6 +97,52 @@ function getMovies(category: category, quantity: number = 25) {
 }
 
 // getMovies("trending");
+
+type tv_category =
+  | "trending"
+  | "popular"
+  | "anticipated"
+  | "watched"
+  | "played";
+
+/**
+ * Function to get a list of tv shows with different categories
+ * @param category
+ * @param quantity
+ * @returns {Promise} - list of tv shows
+ */
+function getShows(category: tv_category, quantity: number = 25) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: `https://api.trakt.tv/shows/${category}?limit=${quantity}`,
+      headers: {
+        "Content-Type": "application/json",
+        "trakt-api-version": "2",
+        "trakt-api-key": process.env.CLIENT_ID,
+      },
+    })
+      .then((res: any) => {
+        const shows = res.data;
+        let showList: Movie[] = [];
+        for (let i = 0; i < shows.length; i++) {
+          showList.push({
+            title: shows[i].show.title,
+            year: shows[i].show.year,
+            trakt_id: shows[i].show.ids.trakt,
+            tmdb_id: shows[i].show.ids.tmdb,
+          });
+        }
+        // console.log(showList);
+        resolve(showList);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+getShows("trending", 10);
 
 /**
  * Function to authenticate a user
@@ -315,14 +361,14 @@ function retrieveMovies() {
 
 /**
  * Function to recommend new movies based on a user's watch history
- * @param {string} type - type of movie recommendation (trending, popular, recommended)
+ * @param {string} movie_category - type of movie recommendation (trending, popular, recommended)
  * @return {Movie[]} - list of recommended movies
  */
-function recommendMovies(type) {
+function recommendMovies(movie_category) {
   let Ids: number[] = [];
   let recommendedMovies: Movie[] = [];
 
-  console.log(`Getting ${type} movies\n`);
+  console.log(`Getting ${movie_category} movies\n`);
   retrieveMovies()
     .then((movieIds: number[]) => {
       // TODO: Rename variables to be more descriptive
@@ -358,4 +404,10 @@ function recommendMovies(type) {
 // con.end();
 // recommendMovies("trending");
 
-export { getTrendingMovies, getMovieSummary, recommendMovies, getMovies };
+export {
+  getTrendingMovies,
+  getMovieSummary,
+  recommendMovies,
+  getMovies,
+  getShows,
+};

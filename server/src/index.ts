@@ -1,7 +1,7 @@
 const express = require("express");
 // const bodyParser = require("body-parser");
 const cors = require("cors");
-import { getTrendingMovies, getMovies } from "./trakt";
+import { getTrendingMovies, getMovies, getShows } from "./trakt";
 import { getMovieInfo, getPopularMovies } from "./tmdb";
 
 const app = express();
@@ -24,6 +24,14 @@ app.get("/trending", (req, res) => {
 app.get("/movies/:category", (req, res) => {
   const category = req.params.category;
   getMovies(category).then((movies) => {
+    res.json(movies);
+  });
+});
+
+// Create route to get tv shows with parameters for categories
+app.get("/tv/:category", (req, res) => {
+  const category = req.params.category;
+  getShows(category).then((movies) => {
     res.json(movies);
   });
 });
