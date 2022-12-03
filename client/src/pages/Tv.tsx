@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import MovieCard from "../components/MovieCard";
+import ShowCard from "../components/ShowCard";
 
 interface Show {
   id: number;
@@ -15,8 +15,7 @@ export default function Tv() {
   const [category, setCategory] = useState("trending");
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/tv/${category}`).then((res: any) => {
-      // console.log(res);
+    axios.get(`http://localhost:8080/shows/${category}`).then((res: any) => {
       setShows(res.data);
     });
   }, [category]);
@@ -35,14 +34,13 @@ export default function Tv() {
       <div className="movie-card-container">
         {shows?.map((show: Show) => {
           return (
-            // <MovieCard
-            //   key={show.tmdb_id}
-            //   class_name="movie-card"
-            //   title={show.title}
-            //   tmdb_id={show.tmdb_id}
-            //   year={show.year}
-            // />
-            <div>{show.title}</div>
+            <ShowCard
+              key={show.tmdb_id}
+              class_name="movie-card"
+              title={show.title}
+              tmdb_id={show.tmdb_id}
+              year={show.year}
+            />
           );
         })}
       </div>
