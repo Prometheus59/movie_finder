@@ -2,7 +2,7 @@ import axios from "axios";
 // import * as dotenv from "dotenv";
 // import * as fs from "fs";
 import { getAverageRuntime } from "./utils";
-import { Movie } from "./types";
+import { Movie, Show } from "./types";
 
 // import database connection
 const con = require("./mysql");
@@ -54,12 +54,12 @@ function getMovieDetails(tmdb_id: number) {
  * @param tmdb_id
  * @returns Promise with an array of watch providers
  * @example
- * getWatchProviders(550).then((res) => {
+ * getMovieProviders(550).then((res) => {
  *  console.log(res);
  * });
  * Output: [ { provider_name: 'Netflix', logo_path: '/wwemzKWzjKYJFfCeiB57q3r4Bcm.png' } ]
  */
-function getWatchProviders(tmdb_id) {
+function getMovieProviders(tmdb_id) {
   return new Promise((resolve, reject) => {
     axios({
       method: "get",
@@ -76,7 +76,38 @@ function getWatchProviders(tmdb_id) {
   });
 }
 
-// getWatchProviders(550).then((res) => {
+// getMovieProviders(550).then((res) => {
+//   console.log(res);
+// });
+
+/**
+ * Function to get a tv show's watch providers
+ * @param tmdb_id
+ * @returns Promise with an array of watch providers
+ * @example
+ * getMovieProviders(1399).then((res) => {
+ * console.log(res);
+ * });
+ * Output: [ { provider_name: 'Netflix', logo_path: '/wwemzKWzjKYJFfCeiB57q3r4Bcm.png', provider_id: 68, display_priority: 16} ]
+ */
+function getTvShowProviders(tmdb_id) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: `${tmdb_url}tv/${tmdb_id}/watch/providers?api_key=${process.env.TMDB_API_KEY}`,
+    })
+      .then((res: any) => {
+        const providers = res.data.results.CA;
+        // console.log(`providers are ${JSON.stringify(providers)}`);
+        resolve(providers);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+// getTvShowProviders(1399).then((res) => {
 //   console.log(res);
 // });
 
@@ -85,19 +116,19 @@ function getWatchProviders(tmdb_id) {
  * @param tmdb_id
  * @returns Promise with a tv show object
  * @example
- * getTvShowDetails(1399).then((res) => {
+ * getShowDetails(1399).then((res) => {
  * console.log(res);
  * });
  * Output: { title: 'Game of Thrones', year: 2011, tmdb_id: 1399, overview: 'Nine noble families fight for control over the mythical lands of Westeros, while an ancient enemy returns after being dormant for thousands of years.', runtime: 60 }
  */
-function getTvShowDetails(tmdb_id) {
+function getShowDetails(tmdb_id) {
   return new Promise((resolve, reject) => {
     axios({
       method: "get",
       url: `${tmdb_url}tv/${tmdb_id}?api_key=${process.env.TMDB_API_KEY}`,
     })
       .then((res: any) => {
-        const tvShow: Movie = {
+        const tvShow: Show = {
           trakt_id: 0, // TODO: Must change this to the correct id
           title: res.data.name,
           year: res.data.first_air_date.split("-")[0],
@@ -193,12 +224,35 @@ function getMovieInfo(tmdb_id) {
   return new Promise((resolve, reject) => {
     getMovieDetails(tmdb_id).then((movie: Movie) => {
       // TODO: Change below any type
-      getWatchProviders(tmdb_id).then((providers: any) => {
+      getMovieProviders(tmdb_id).then((providers: any) => {
         movie.providers = [];
         providers?.flatrate?.forEach((provider) => {
           movie.providers.push(provider.provider_name);
         });
         resolve(movie);
+      });
+    });
+  });
+}
+
+/**
+ * Function to get a tv show's details and then get the watch providers
+ * @param tmdb_id
+ * @returns Promise with a tv show object
+ * @example
+ * getTvShowInfo(1399).then((res) => { console.log(res); });
+ * Output: { title: 'Game of Thrones', year: 2011, tmdb_id: 1399, overview: 'Nine noble families fight for control over the mythical lands of Westeros, while an ancient enemy returns after being dormant for thousands of years.', runtime: 60, providers: [ 'HBO Max', 'HBO Now', 'HBO Go' ] }
+ */
+
+function getShowInfo(tmdb_id) {
+  return new Promise((resolve, reject) => {
+    getShowDetails(tmdb_id).then((tvShow: Show) => {
+      getTvShowProviders(tmdb_id).then((providers: any) => {
+        tvShow.providers = [];
+        providers?.flatrate?.forEach((provider) => {
+          tvShow.providers.push(provider.provider_name);
+        });
+        resolve(tvShow);
       });
     });
   });
@@ -238,4 +292,4 @@ function getMovieInfo(tmdb_id) {
 
 // con.end();
 
-export { getMovieInfo, getTvShowDetails };
+export { getMovieInfo, getShowInfo };

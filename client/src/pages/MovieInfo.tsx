@@ -1,13 +1,14 @@
 import React from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { runtimeToHours } from "../utils/processing";
 
 import "../styles/movieInfo.css";
 
 // Import images for watch providers
 import { getWatchProviderLogo } from "../utils/watch_providers";
 
-import Movie from "../types";
+import { Movie } from "../types";
 
 export default function MovieInfo() {
   let { id } = useParams();
@@ -81,7 +82,7 @@ export default function MovieInfo() {
 
             <p>{movie.overview}</p>
             <p>
-              {movie.year} | Movie Runtime: {movie.runtime} mins
+              {movie.year} | Runtime: {runtimeToHours(movie.runtime || 0)}
             </p>
             {providers}
             <div>

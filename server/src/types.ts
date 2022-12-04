@@ -10,8 +10,8 @@ export interface Movie {
   poster_path?: string; // Optional
 }
 
-export default interface Show {
-  id?: number;
+export interface Show {
+  trakt_id?: number;
   title: string;
   year: number;
   tmdb_id: number;

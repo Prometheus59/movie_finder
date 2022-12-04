@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 import { getWatchProviderLogo } from "../utils/watch_providers";
 
-import Show from "../types";
+import { Show } from "../types";
 
 export default function ShowInfo() {
   let { id } = useParams();

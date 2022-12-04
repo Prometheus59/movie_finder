@@ -2,7 +2,7 @@ const express = require("express");
 // const bodyParser = require("body-parser");
 const cors = require("cors");
 import { getMovies, getShows } from "./trakt";
-import { getMovieInfo, getTvShowDetails } from "./tmdb";
+import { getMovieInfo, getShowInfo } from "./tmdb";
 
 const app = express();
 
@@ -38,7 +38,7 @@ app.get("/movie/:tmdb_id", (req, res) => {
 
 app.get("/show/:tmdb_id", (req, res) => {
   const tmdb_id = req.params.tmdb_id;
-  getTvShowDetails(tmdb_id).then((movie) => {
+  getShowInfo(tmdb_id).then((movie) => {
     res.json(movie);
   });
 });

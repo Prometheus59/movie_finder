@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import FeaturedMovieCard from "../components/FeaturedMovieCard";
 import axios from "axios";
 import MovieCard from "../components/MovieCard";
-import Movie from "../types";
+import { Movie } from "../types";
 
 import "../styles/home.css";
 

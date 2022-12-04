@@ -1,4 +1,4 @@
-export default interface Movie {
+export interface Movie {
   id?: number;
   title: string;
   year: number;
@@ -11,8 +11,8 @@ export default interface Movie {
   poster_path?: string;
 }
 
-export default interface Show {
-  id?: number;
+export interface Show {
+  trakt_id?: number;
   title: string;
   year: number;
   tmdb_id: number;
