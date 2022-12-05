@@ -19,7 +19,7 @@ export default function MovieInfo() {
   const poster_url_base = "https://image.tmdb.org/t/p/w500/";
 
   React.useEffect(() => {
-    axios.get("http://localhost:8080/movie/" + id).then((res: any) => {
+    axios.get("http://localhost:8080/movies/info/" + id).then((res: any) => {
       // console.log(`res.data is ${JSON.stringify(res.data)}`);
       setMovie({
         id: 0,

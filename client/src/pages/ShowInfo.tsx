@@ -16,7 +16,7 @@ export default function ShowInfo() {
   const poster_url_base = "https://image.tmdb.org/t/p/w500/";
 
   useEffect(() => {
-    axios.get("http://localhost:8080/show/" + id).then((res: any) => {
+    axios.get("http://localhost:8080/shows/info/" + id).then((res: any) => {
       setShow({
         // id: 0,
         tmdb_id: res.data.id,

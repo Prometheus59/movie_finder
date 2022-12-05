@@ -31,26 +31,28 @@ const defaultOptions = {
 export default function MovieCard(props: MovieCardProps) {
   const { tmdb_id, title, year, class_name } = props;
 
-  const movie_detail_url = `/movie/${tmdb_id}`;
+  const movie_detail_url = `/movies/info/${tmdb_id}`;
   const backdrop_url_base = `https://image.tmdb.org/t/p/original/`;
 
   // request movie details for description, img, genres
   const [movie, setMovie] = useState<any>();
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/movie/${tmdb_id}`).then((res: any) => {
-      setMovie({
-        // id: 0,
-        tmdb_id: tmdb_id,
-        title: title,
-        overview: res.data.overview,
-        year: year,
-        runtime: res.data.runtime,
-        // genres: res.data.genres, -> This is returned from this api
-        backdrop_path: res.data.backdrop_path,
-        providers: res.data.providers,
+    axios
+      .get(`http://localhost:8080/movies/info/${tmdb_id}`)
+      .then((res: any) => {
+        setMovie({
+          // id: 0,
+          tmdb_id: tmdb_id,
+          title: title,
+          overview: res.data.overview,
+          year: year,
+          runtime: res.data.runtime,
+          // genres: res.data.genres, -> This is returned from this api
+          backdrop_path: res.data.backdrop_path,
+          providers: res.data.providers,
+        });
       });
-    });
   }, [tmdb_id, title, year]);
 
   if (!movie) {

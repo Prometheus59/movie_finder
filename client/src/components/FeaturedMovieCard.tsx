@@ -13,7 +13,7 @@ interface MovieCardProps {
 
 export default function MovieCard(props: MovieCardProps) {
   const { tmdb_id, title, img, description, genres } = props;
-  const movie_detail_url = `/movie/${tmdb_id}`;
+  const movie_detail_url = `/movies/info/${tmdb_id}`;
   // console.log(`img: ${img}`);
 
   return (

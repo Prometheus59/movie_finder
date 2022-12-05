@@ -27,26 +27,28 @@ const defaultOptions = {
 export default function ShowCard(props: ShowCardProps) {
   const { tmdb_id, title, year, class_name } = props;
 
-  const show_detail_url = `/tv/${tmdb_id}`;
+  const show_detail_url = `/shows/info/${tmdb_id}`;
   const backdrop_url_base = `https://image.tmdb.org/t/p/original/`;
 
   // request show details for description, img, genres
   const [show, setShow] = useState<any>();
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/show/${tmdb_id}`).then((res: any) => {
-      setShow({
-        // id: 0,
-        tmdb_id: tmdb_id,
-        title: title,
-        overview: res.data.overview,
-        year: year,
-        runtime: res.data.runtime,
-        // genres: res.data.genres, -> This is returned from this api
-        backdrop_path: res.data.backdrop_path,
-        providers: res.data.providers,
+    axios
+      .get(`http://localhost:8080/shows/info/${tmdb_id}`)
+      .then((res: any) => {
+        setShow({
+          // id: 0,
+          tmdb_id: tmdb_id,
+          title: title,
+          overview: res.data.overview,
+          year: year,
+          runtime: res.data.runtime,
+          // genres: res.data.genres, -> This is returned from this api
+          backdrop_path: res.data.backdrop_path,
+          providers: res.data.providers,
+        });
       });
-    });
   }, [tmdb_id, title, year]);
 
   if (!show) {

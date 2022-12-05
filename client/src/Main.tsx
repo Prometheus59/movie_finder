@@ -17,9 +17,9 @@ const Main = () => {
       <Route path="/settings" element={<Settings />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/movies" element={<Movies />} />
-      <Route path="/tv" element={<Shows />} />
-      <Route path="/movie/:id" element={<MovieInfo />} />
-      <Route path="/tv/:id" element={<ShowInfo />} />
+      <Route path="/shows" element={<Shows />} />
+      <Route path="/movies/info/:id" element={<MovieInfo />} />
+      <Route path="/shows/info/:id" element={<ShowInfo />} />
     </Routes>
   );
 };
