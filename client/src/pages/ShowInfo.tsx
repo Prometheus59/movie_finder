@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { runtimeToHours } from "../utils/processing";
 
 // import "../styles/movieInfo.css";
 
@@ -75,7 +76,8 @@ export default function ShowInfo() {
 
             <p>{show.overview}</p>
             <p>
-              {show.year} | Average Episode Runtime: {show.runtime} mins
+              {show.year} | Average Episode Runtime:{" "}
+              {runtimeToHours(show.runtime || 0)}
             </p>
             {providers}
             <div>
