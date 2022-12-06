@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import MovieInfo from "./pages/MovieInfo";
 import Shows from "./pages/Shows";
 import ShowInfo from "./pages/ShowInfo";
+import SearchResults from "./pages/SearchResults";
 
 const Main = () => {
   return (
@@ -20,6 +21,8 @@ const Main = () => {
       <Route path="/shows" element={<Shows />} />
       <Route path="/movies/info/:id" element={<MovieInfo />} />
       <Route path="/shows/info/:id" element={<ShowInfo />} />
+      <Route path="/search/:searchTerm" element={<SearchResults />} />
+      <Route path="*" element={<p>Path not resolved</p>} />
     </Routes>
   );
 };
