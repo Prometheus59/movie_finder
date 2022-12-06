@@ -149,7 +149,58 @@ function getShowDetails(tmdb_id) {
   });
 }
 
-//TODO: Add function to consolidate tv show providers with the rest of the show info
+/**
+ * Function to search for a show or movie
+ * @param query
+ * @returns {Promise} - list of movies or shows
+ */
+function search(query) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: `${tmdb_url}search/multi?api_key=${process.env.TMDB_API_KEY}&query=${query}`,
+    })
+      .then((res: any) => {
+        const results = res.data.results;
+        const movies = results.filter(
+          (result) => result.media_type === "movie"
+        );
+        const shows = results.filter((result) => result.media_type === "tv");
+
+        // loop through movies and
+        let searchResults: any[] = [];
+
+        for (let i = 0; i < results.length; i++) {
+          if (results[i].media_type === "movie") {
+            // console.log(JSON.stringify(results[i]));
+            searchResults.push({
+              type: results[i].media_type,
+              title: results[i].title,
+              tmdb_id: results[i].id,
+            });
+          } else if (results[i].media_type === "tv") {
+            // console.log(JSON.stringify(results[i]));
+            searchResults.push({
+              type: results[i].media_type,
+              title: results[i].name,
+              tmdb_id: results[i].id,
+            });
+          }
+        }
+
+        // console.log(`Movies: ${JSON.stringify(movies)}`);
+        // console.log(`Shows: ${JSON.stringify(shows)}`);
+        console.log(`Search results: ${JSON.stringify(searchResults)}`);
+        resolve({ movies, shows });
+        // resolve(searchResults);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+search("Inception");
 
 /**
  * Function to get a movie's videos
@@ -292,4 +343,4 @@ function getShowInfo(tmdb_id) {
 
 // con.end();
 
-export { getMovieInfo, getShowInfo };
+export { getMovieInfo, getShowInfo, search };

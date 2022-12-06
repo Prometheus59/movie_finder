@@ -11,7 +11,7 @@ interface ShowCardProps {
   class_name: string;
   tmdb_id: number;
   title: string;
-  year: number;
+  year?: number;
 }
 
 // Options for Lottie animations
@@ -42,7 +42,7 @@ export default function ShowCard(props: ShowCardProps) {
           tmdb_id: tmdb_id,
           title: title,
           overview: res.data.overview,
-          year: year,
+          year: year ?? res.data.year,
           runtime: res.data.runtime,
           // genres: res.data.genres, -> This is returned from this api
           backdrop_path: res.data.backdrop_path,
@@ -60,7 +60,14 @@ export default function ShowCard(props: ShowCardProps) {
   } else {
     return (
       <div className={class_name}>
-        <img src={backdrop_url_base + show.backdrop_path} alt="show backdrop" />
+        <img
+          src={
+            show.backdrop_path
+              ? backdrop_url_base + show.backdrop_path
+              : "https://via.placeholder.com/300x450"
+          }
+          alt="show backdrop"
+        />
         {/* <div className="colored" /> */}
         <div className={`card-text ${class_name}`}>
           <div className={`title ${class_name}`}>{title}</div>

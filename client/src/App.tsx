@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import WebFont from "webfontloader";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./styles/App.css";
 
 import Main from "./Main";
 import Navbar from "./components/Navbar";
+
+const queryClient = new QueryClient();
 
 function App() {
   // Load fonts
@@ -17,8 +21,11 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
-      <Main />
+      <QueryClientProvider client={queryClient}>
+        <Navbar />
+        <Main />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </div>
   );
 }

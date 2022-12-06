@@ -120,8 +120,55 @@ function getShows(category: tv_category, quantity: number = 25) {
       });
   });
 }
-
 // getShows("trending", 10);
+
+/**
+ * Function to search for a show or movie
+ * @param query
+ * @returns {Promise} - list of movies or shows
+ */
+// function search(query: string) {
+//   return new Promise((resolve, reject) => {
+//     axios({
+//       method: "get",
+//       url: `https://api.trakt.tv/search/movie,show?query=${query}`,
+//       headers: {
+//         "Content-Type": "application/json",
+//         "trakt-api-version": "2",
+//         "trakt-api-key": process.env.CLIENT_ID,
+//       },
+//     })
+//       .then((res: any) => {
+//         const results = res.data;
+//         let searchResults: any[] = [];
+
+//         for (let i = 0; i < results.length; i++) {
+//           if (results[i].type === "movie") {
+//             searchResults.push({
+//               type: results[i].type,
+//               title: results[i].movie.title,
+//               year: results[i].movie.year,
+//               trakt_id: results[i].movie.ids.trakt,
+//               tmdb_id: results[i].movie.ids.tmdb,
+//             });
+//           } else {
+//             searchResults.push({
+//               type: results[i].type,
+//               title: results[i].show.title,
+//               year: results[i].show.year,
+//               trakt_id: results[i].show.ids.trakt,
+//               tmdb_id: results[i].show.ids.tmdb,
+//             });
+//           }
+//         }
+//         // console.log(`searchResults is ${JSON.stringify(searchResults)}`);
+//         resolve(searchResults);
+//       })
+//       .catch((err) => {
+//         reject(err);
+//       });
+//   });
+// }
 
 /**
  * Function to authenticate a user

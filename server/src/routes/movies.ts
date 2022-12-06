@@ -21,9 +21,14 @@ router.get("/:category", (req, res) => {
 // Route to get information about a specific movie
 router.get("/info/:tmdb_id", (req, res) => {
   const tmdb_id = req.params.tmdb_id;
-  getMovieInfo(tmdb_id).then((movie) => {
-    res.json(movie);
-  });
+  getMovieInfo(tmdb_id)
+    .then((movie) => {
+      res.json(movie);
+    })
+    .catch((err) => {
+      console.log(err);
+      throw err;
+    });
 });
 
 module.exports = router;

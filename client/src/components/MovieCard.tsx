@@ -12,7 +12,7 @@ interface MovieCardProps {
   class_name: string;
   tmdb_id: number;
   title: string;
-  year: number;
+  year?: number;
   // img: string;
   // description: string;
   // genres: string[];
@@ -46,7 +46,7 @@ export default function MovieCard(props: MovieCardProps) {
           tmdb_id: tmdb_id,
           title: title,
           overview: res.data.overview,
-          year: year,
+          year: year ?? res.data.year,
           runtime: res.data.runtime,
           // genres: res.data.genres, -> This is returned from this api
           backdrop_path: res.data.backdrop_path,
@@ -65,7 +65,11 @@ export default function MovieCard(props: MovieCardProps) {
     return (
       <div className={class_name}>
         <img
-          src={backdrop_url_base + movie.backdrop_path}
+          src={
+            movie.backdrop_path
+              ? backdrop_url_base + movie.backdrop_path
+              : "https://via.placeholder.com/300x450"
+          }
           alt="movie backdrop"
         />
         {/* <div className="colored" /> */}
