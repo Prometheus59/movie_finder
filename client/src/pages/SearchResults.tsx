@@ -3,19 +3,23 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
+// Import styles
+import "../styles/home.css";
+
 // Import Components
 import ShowCard from "../components/ShowCard";
 import MovieCard from "../components/MovieCard";
 
 // Import interfaces
-import { Show, Movie } from "../types";
-
 interface MediaWithType {
   type: string;
   title: string;
   id: number;
+  name: string;
+  backdrop_path?: string;
+  vote_count?: number;
 }
-
+//TODO: Fix the above interface, it is not what's being returned from the api
 interface QueryResponse {
   movies: MediaWithType[];
   shows: MediaWithType[];
@@ -23,14 +27,12 @@ interface QueryResponse {
 
 export default function SearchResults() {
   const { searchTerm } = useParams(); // ?? { searchTerm: "" };
-  // const [shows, setShows] = React.useState<ShowWithType[]>([]);
-  // const [movies, setMovies] = React.useState<MovieWithType[]>([]);
 
   function searchForTerm(): Promise<QueryResponse> {
     return axios
       .get(`http://localhost:8080/search/${searchTerm}`)
       .then((res) => {
-        console.log(`res.data: ${JSON.stringify(res.data)}`);
+        // console.log(`res.data: ${JSON.stringify(res.data)}`);
         return res.data;
       })
       .catch((err) => {
@@ -47,7 +49,6 @@ export default function SearchResults() {
   });
 
   if (searchQuery.isLoading) {
-    console.log(`Loading...`);
     return (
       <div>
         <h1>Loading...</h1>
@@ -67,48 +68,43 @@ export default function SearchResults() {
   }
 
   // NOTE: Data returned from api is catagorized into two properties; movies and shows
-  let movies: MediaWithType[] = searchQuery.data.movies; // .data as any
+  let movies: MediaWithType[] = searchQuery.data.movies;
   let shows: MediaWithType[] = searchQuery.data.shows;
-  // console.log(`media: ${JSON.stringify(media)}`);
-  // let movies: MediaWithType[] = [];
 
-  // for (let i = 0; i < media?.length; i++) {
-  //   if (media[i].type === "show") {
-  //     // return <ShowCard show={media[i]} />;
-  //     shows = [...shows, media[i]];
-  //   } else if (media[i].type === "movie") {
-  //     // return <MovieCard movie={data[i]} />;
-  //     movies = [...movies, media[i]];
-  //   }
-  // }
+  // If movie/show does not have a backdrop, move it to the bottom of the list
+  for (let i = 0; i < movies.length; i++) {
+    if (movies[i].backdrop_path === null) {
+      // Move item to back of the list
+      movies.push(movies.splice(i, 1)[0]);
+    }
+  }
 
   if (searchQuery.isSuccess)
     return (
       <div>
         <h1>Search Results</h1>
         <h2>Movies</h2>
-        <div>
+        <div className="movie-card-container">
           {movies.map((movie: MediaWithType) => {
             return (
               <MovieCard
                 key={movie.id}
                 class_name="movie-card"
                 title={movie.title}
-                // year={media.year}
                 tmdb_id={movie.id}
               />
             );
           })}
         </div>
         <h2>Shows</h2>
-        <div>
-          {shows.map((movie: MediaWithType) => {
+        <div className="movie-card-container">
+          {shows.map((shows: MediaWithType) => {
             return (
               <ShowCard
-                key={movie.id}
+                key={shows.id}
                 class_name="movie-card"
-                title={movie.title}
-                tmdb_id={movie.id}
+                title={shows.name}
+                tmdb_id={shows.id}
               />
             );
           })}
@@ -118,7 +114,7 @@ export default function SearchResults() {
 
   return (
     <div>
-      <h1>Search Results Didn't work</h1>
+      <h1>Search Didn't work: Please try again</h1>
     </div>
   );
 }

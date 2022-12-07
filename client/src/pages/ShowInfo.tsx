@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { runtimeToHours } from "../utils/processing";
@@ -11,6 +12,7 @@ import { Show } from "../types";
 
 export default function ShowInfo() {
   let { id } = useParams();
+  const navigate = useNavigate();
 
   const [show, setShow] = useState<Show>();
 
@@ -65,6 +67,7 @@ export default function ShowInfo() {
   if (show) {
     return (
       <div className="movieInfoContainer">
+        <button onClick={() => navigate(-1)}>Back</button>
         <div className="movieInfo">
           <img
             src={poster_url_base + show.poster_path}

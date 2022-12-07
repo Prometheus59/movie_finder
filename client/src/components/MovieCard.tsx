@@ -78,7 +78,7 @@ export default function MovieCard(props: MovieCardProps) {
           <p className={`${class_name} desc`}>{reduceText(movie.overview)}</p>
           <div className={`bottom-text ${class_name}`}>
             <div className={`movie-info ${class_name}`}>
-              <div>{year}</div>
+              <div>{movie.year}</div>
               {/* <div className={`genres ${class_name}`}>
               {genres.map((genre, i) => {
                 if (i === genres.length - 1) {

@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { runtimeToHours } from "../utils/processing";
 
@@ -12,6 +13,7 @@ import { Movie } from "../types";
 
 export default function MovieInfo() {
   let { id } = useParams();
+  const navigate = useNavigate();
 
   const [movie, setMovie] = React.useState<Movie>();
 
@@ -71,6 +73,7 @@ export default function MovieInfo() {
   if (movie) {
     return (
       <div className="movieInfoContainer">
+        <button onClick={() => navigate(-1)}>Back</button>
         <div className="movieInfo">
           <img
             src={poster_url_base + movie.poster_path}
