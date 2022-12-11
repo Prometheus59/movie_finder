@@ -44,6 +44,12 @@ function getMovieDetails(tmdb_id: number) {
         resolve(movie);
       })
       .catch((err) => {
+        console.log("Error retrieving movie details");
+        if (err.response) {
+          console.log(err.response.status);
+          // console.log(err.response.headers);
+          // console.log(err.response.data);
+        }
         reject(err);
       });
   });
@@ -71,6 +77,7 @@ function getMovieProviders(tmdb_id) {
         resolve(providers);
       })
       .catch((err) => {
+        console.log("Error retrieving movie providers");
         reject(err);
       });
   });
@@ -252,13 +259,18 @@ function getMovieInfo(tmdb_id) {
   return new Promise((resolve, reject) => {
     getMovieDetails(tmdb_id).then((movie: Movie) => {
       // TODO: Change below any type
-      getMovieProviders(tmdb_id).then((providers: any) => {
-        movie.providers = [];
-        providers?.flatrate?.forEach((provider) => {
-          movie.providers.push(provider.provider_name);
+      getMovieProviders(tmdb_id)
+        .then((providers: any) => {
+          movie.providers = [];
+          providers?.flatrate?.forEach((provider) => {
+            movie.providers.push(provider.provider_name);
+          });
+          resolve(movie);
+        })
+        .catch((err) => {
+          console.log("Error getting Movie Info");
+          reject(err);
         });
-        resolve(movie);
-      });
     });
   });
 }
