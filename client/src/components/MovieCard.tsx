@@ -55,6 +55,21 @@ export default function MovieCard(props: MovieCardProps) {
       });
   }, [tmdb_id, title, year]);
 
+  function card_background() {
+    if (movie.backdrop_path) {
+      return (
+        <img
+          src={backdrop_url_base + movie.backdrop_path}
+          alt="movie backdrop"
+        />
+      )
+    } else {
+      return (
+        <div className="movie-card-background" />
+      )
+    }
+  }
+
   if (!movie) {
     return (
       <div>
@@ -64,14 +79,15 @@ export default function MovieCard(props: MovieCardProps) {
   } else {
     return (
       <div className={class_name}>
-        <img
+        {/* <img
           src={
             movie.backdrop_path
               ? backdrop_url_base + movie.backdrop_path
               : "https://via.placeholder.com/300x450"
           }
           alt="movie backdrop"
-        />
+        /> */}
+        {card_background()}
         {/* <div className="colored" /> */}
         <div className={`card-text ${class_name}`}>
           <div className={`title ${class_name}`}>{title}</div>
