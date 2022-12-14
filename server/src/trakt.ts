@@ -62,7 +62,13 @@ function getMovies(category: movie_category, quantity: number = 25) {
   });
 }
 
-// getMovies("trending");
+// getMovies("trending").then((res) => {
+//   console.log(res);
+// })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+  
 
 type tv_category =
   | "trending"
