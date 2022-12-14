@@ -7,7 +7,11 @@ import { getMovieInfo } from "../tmdb";
 router.get("/", (req, res) => {
   getMovies("trending").then((movies) => {
     res.json(movies);
-  });
+  })
+  .catch((err) => {
+    console.log(err);
+    throw err;
+  })
 });
 
 // Route to get movies with a parameter for category
@@ -15,7 +19,11 @@ router.get("/:category", (req, res) => {
   const category = req.params.category;
   getMovies(category).then((movies) => {
     res.json(movies);
-  });
+  })
+  .catch((err) => {
+    console.log(err);
+    throw err;
+  })
 });
 
 // Route to get information about a specific movie
