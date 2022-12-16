@@ -320,4 +320,4 @@ function getShowInfo(tmdb_id) {
 
 // con.end();
 
-export { getMovieInfo, getShowInfo, search };
+export { getMovieInfo, getShowInfo, search, getMovieDetails};
