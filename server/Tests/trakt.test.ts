@@ -1,10 +1,9 @@
 // require("../node_modules/@jest/types");
 // require('../node_modules/@types/node');
 // require("../node_modules/jest");
-import 'jest';
+import "jest";
 // const { getMovies } = require("../dist/trakt");
-import { getMovies } from "../dist/trakt";
-
+import { getMovies } from "../src/trakt";
 
 describe("getMovies function", () => {
   test("getMovies", () => {

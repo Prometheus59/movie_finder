@@ -26,10 +26,13 @@ function getMovies(category: movie_category, quantity: number = 25) {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
         "trakt-api-key": process.env.CLIENT_ID,
+        "accept-encoding": "*",
+        // "Accept-Encoding": "gzip,deflate,compress",
       },
     })
       .then((res: any) => {
         const movies = res.data;
+        // console.log(`res.data is ${res.data}`);
 
         let movieList: Movie[] = [];
 
@@ -46,10 +49,10 @@ function getMovies(category: movie_category, quantity: number = 25) {
         } else {
           for (let i = 0; i < movies.length; i++) {
             movieList.push({
-              title: movies[i].movie.title,
-              year: movies[i].movie.year,
-              trakt_id: movies[i].movie.ids.trakt,
-              tmdb_id: movies[i].movie.ids.tmdb,
+              title: movies[i]?.movie?.title,
+              year: movies[i].movie?.year,
+              trakt_id: movies[i].movie?.ids.trakt,
+              tmdb_id: movies[i].movie?.ids.tmdb,
             });
           }
         }
@@ -62,13 +65,13 @@ function getMovies(category: movie_category, quantity: number = 25) {
   });
 }
 
-// getMovies("trending").then((res) => {
-//   console.log(res);
-// })
+// getMovies("trending")
+//   .then((res) => {
+//     console.log(res);
+//   })
 //   .catch((err) => {
 //     console.log(err);
 //   });
-  
 
 type tv_category =
   | "trending"
@@ -92,6 +95,8 @@ function getShows(category: tv_category, quantity: number = 25) {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
         "trakt-api-key": process.env.CLIENT_ID,
+        // "Accept-Encoding": "gzip,deflate,compress",
+        "accept-encoding": "*",
       },
     })
       .then((res: any) => {
@@ -348,6 +353,8 @@ function getMovieSummary(id) {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
         "trakt-api-key": process.env.CLIENT_ID,
+        "accept-encoding": "*",
+        // "Accept-Encoding": "gzip,deflate,compress",
       },
     })
       .then((res) => {
