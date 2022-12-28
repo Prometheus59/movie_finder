@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
+import profileIcon from "../images/profile.png";
 
 import Search from "./Search";
 
@@ -45,8 +46,19 @@ function Navbar() {
 
       <div className="navbar-right">
         {/* Change below items to icons/dropdowns */}
-        <Link to="/settings">Settings</Link>
-        <Link to="/profile">Profile</Link>
+        {/* <Link to="/settings">Settings</Link>
+        <Link to="/profile">Profile</Link> */}
+        <div className="dropdown">
+          <img id="profile-icon" src={profileIcon} alt="Profile" />
+          <div className="dropdown-content">
+            <Link to="/profile">
+              <button>Profile</button>
+            </Link>
+            <Link to="/settings">
+              <button>Settings</button>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
