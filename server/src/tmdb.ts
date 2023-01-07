@@ -12,6 +12,28 @@ require("dotenv").config();
 
 const tmdb_url = "https://api.themoviedb.org/3/";
 
+const genres = {
+  Action: 28,
+  Adventure: 12,
+  Animation: 16,
+  Comedy: 35,
+  Crime: 80,
+  Documentary: 99,
+  Drama: 18,
+  Family: 10751,
+  Fantasy: 14,
+  History: 36,
+  Horror: 27,
+  Music: 10402,
+  Mystery: 9648,
+  Romance: 10749,
+  "Science Fiction": 878,
+  "TV Movie": 10770,
+  Thriller: 53,
+  War: 10752,
+  Western: 37,
+};
+
 /**
  *
  * @param tmdb_id integer
@@ -202,6 +224,58 @@ function search(query) {
 // search("Inception");
 
 /**
+ * Function to get movies from a certain genre
+ * @param genre_strings - list of genres
+ * @returns {Promise} - list of movies
+ */
+function getMoviesByGenre(genre_strings) {
+  // get genre ids
+  let genre_ids = [];
+  if (genre_strings.length > 1) {
+    genre_ids = genre_strings.map((genre) => {
+      return genres[genre];
+    });
+  } else {
+    genre_ids = genres[genre_strings[0]];
+  }
+
+  let genre_ids_string: string;
+
+  // if there is more than one genre, join them into a string
+  if (genre_ids.length > 1) {
+    // turn list into string and remove spaces
+    genre_ids_string = genre_ids.join(",").replace(/\s/g, "");
+  } else {
+    genre_ids_string = genre_ids[0];
+  }
+
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: `${tmdb_url}discover/movie?api_key=${process.env.TMDB_API_KEY}&with_genres=${genre_ids_string}&sort_by=popularity.desc`,
+      headers: {
+        // "Accept-Encoding": "gzip,deflate,compress",
+        "accept-encoding": "*",
+      },
+    })
+      .then((res: any) => {
+        const movies = res.data.results;
+        resolve(movies);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+// getMoviesByGenre(genres["Action"]).then((res) => {
+//   console.log(res);
+// });
+getMoviesByGenre(["Science Fiction"]).then((res) => {
+  console.log(res);
+});
+
+/**
  * Function to get a movie's videos
  * @param tmdb_id
  * @returns Promise with an array of videos
@@ -310,36 +384,6 @@ function getShowInfo(tmdb_id) {
 
 // getMovieDetails(928344);
 
-// function getPopularMovies() {
-//   return new Promise((resolve, reject) => {
-//     axios({
-//       method: "get",
-//       url: `${tmdb_url}movie/popular?api_key=${process.env.TMDB_API_KEY}`,
-//     })
-//       .then((res: any) => {
-//         const movies: Movie[] = [];
-//         res.data.results.forEach((movie) => {
-//           const movieObj: Movie = {
-//             trakt_id: 0, // TODO: Must change this to the correct id
-//             title: movie.title,
-//             year: movie.release_date.split("-")[0],
-//             tmdb_id: movie.id,
-//             overview: movie.overview,
-//             runtime: movie.popularity, //TODO: Must change this to actual runtime
-//             providers: [],
-//             // collection: "" -> Null or object
-//           };
-//           movies.push(movieObj);
-//         });
-//         console.log(movies.map((movie) => movie.title));
-//         resolve(movies);
-//       })
-//       .catch((err) => {
-//         reject(err);
-//       });
-//   });
-// }
-
 // con.end();
 
-export { getMovieInfo, getShowInfo, search, getMovieDetails };
+export { getMovieInfo, getShowInfo, search, getMovieDetails, getMoviesByGenre };
