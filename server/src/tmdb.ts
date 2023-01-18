@@ -27,12 +27,16 @@ function getMovieDetails(tmdb_id: number) {
     axios({
       method: "get",
       url: `${tmdb_url}movie/${tmdb_id}?api_key=${process.env.TMDB_API_KEY}`,
+      headers: {
+        "Accept-Encoding": "gzip,deflate,compress",
+        // "accept-encoding": "*",
+      },
     })
       .then((res: any) => {
         const movie: Movie = {
           trakt_id: 0, // TODO: Must change this to the correct id
           title: res.data.title,
-          year: res.data.release_date.split("-")[0],
+          year: res.data?.release_date?.split("-")[0],
           tmdb_id: tmdb_id,
           overview: res.data.overview,
           runtime: res.data.runtime,
@@ -49,6 +53,10 @@ function getMovieDetails(tmdb_id: number) {
   });
 }
 
+// getMovieDetails(550).then((res) => {
+//   console.log(res);
+// });
+
 /**
  * Function to get a movie's watch providers
  * @param tmdb_id
@@ -64,9 +72,13 @@ function getMovieProviders(tmdb_id) {
     axios({
       method: "get",
       url: `${tmdb_url}movie/${tmdb_id}/watch/providers?api_key=${process.env.TMDB_API_KEY}`,
+      headers: {
+        "Accept-Encoding": "gzip,deflate,compress",
+        // "accept-encoding": "*",
+      },
     })
       .then((res: any) => {
-        const providers = res.data.results.CA;
+        const providers = res.data?.results?.CA;
         // console.log(`providers are ${JSON.stringify(providers)}`);
         resolve(providers);
       })
@@ -95,6 +107,9 @@ function getTvShowProviders(tmdb_id) {
     axios({
       method: "get",
       url: `${tmdb_url}tv/${tmdb_id}/watch/providers?api_key=${process.env.TMDB_API_KEY}`,
+      headers: {
+        "Accept-Encoding": "gzip,deflate,compress",
+      },
     })
       .then((res: any) => {
         const providers = res.data.results.CA;
@@ -126,6 +141,9 @@ function getShowDetails(tmdb_id) {
     axios({
       method: "get",
       url: `${tmdb_url}tv/${tmdb_id}?api_key=${process.env.TMDB_API_KEY}`,
+      headers: {
+        "Accept-Encoding": "gzip,deflate,compress",
+      },
     })
       .then((res: any) => {
         const tvShow: Show = {
@@ -159,6 +177,10 @@ function search(query) {
     axios({
       method: "get",
       url: `${tmdb_url}search/multi?api_key=${process.env.TMDB_API_KEY}&query=${query}`,
+      headers: {
+        // "Accept-Encoding": "gzip,deflate,compress",
+        "accept-encoding": "*",
+      },
     })
       .then((res: any) => {
         const results = res.data.results;
@@ -320,4 +342,4 @@ function getShowInfo(tmdb_id) {
 
 // con.end();
 
-export { getMovieInfo, getShowInfo, search, getMovieDetails};
+export { getMovieInfo, getShowInfo, search, getMovieDetails };

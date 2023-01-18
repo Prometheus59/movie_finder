@@ -43,11 +43,40 @@ a {
   color: white;
 }
 
+/* Profile Menu */
 .navbar-right {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 200px;
-  margin-right: 30px;
+  margin-right: 60px;
+}
+
+#profile-icon {
+  width: 2em;
+  height: 2em;
+  padding: 0 30px 0 30px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.dropdown-content button {
+  background-color: #292c31;
+  color: white;
+  width: 100px;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover button:hover {
+  background-color: #f37515;
 }
