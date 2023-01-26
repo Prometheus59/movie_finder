@@ -57,6 +57,9 @@ function Navbar() {
             <Link to="/settings">
               <button>Settings</button>
             </Link>
+            <button>
+              <a href="http://localhost:8080/auth/redirect">Login</a>
+            </button>
           </div>
         </div>
       </div>

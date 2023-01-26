@@ -10,6 +10,7 @@ import MovieInfo from "./pages/MovieInfo";
 import Shows from "./pages/Shows";
 import ShowInfo from "./pages/ShowInfo";
 import SearchResults from "./pages/SearchResults";
+import Auth from "./pages/Auth";
 
 const Main = () => {
   return (
@@ -22,6 +23,7 @@ const Main = () => {
       <Route path="/movies/info/:id" element={<MovieInfo />} />
       <Route path="/shows/info/:id" element={<ShowInfo />} />
       <Route path="/search/:searchTerm" element={<SearchResults />} />
+      <Route path="/auth" element={<Auth />} />
       <Route path="*" element={<p>Path not resolved</p>} />
     </Routes>
   );
