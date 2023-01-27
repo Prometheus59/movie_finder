@@ -5,7 +5,7 @@ import { getAverageRuntime } from "./utils";
 import { Movie, Show } from "./types";
 
 // import database connection
-const con = require("./mysql");
+// const con = require("./mysql");
 
 require("dotenv").config();
 // dotenv.config({ path: "../.env" });
