@@ -3,7 +3,7 @@ require("dotenv").config();
 import * as fs from "fs";
 
 // import database connection
-const con = require("./mysql");
+// const con = require("./mysql");
 // console.log(`password for app.ts is ${process.env.MYSQL_PASSWORD}`);
 
 import { Movie } from "./types";
@@ -291,10 +291,10 @@ function getUserSlug(accessToken) {
  * @param {string} type - type of history to get (movies or shows)
  */
 function getWatchHistory(slug, type) {
-  con.connect((err) => {
-    if (err) throw err;
-    console.log("Connected!");
-  });
+  // con.connect((err) => {
+  //   if (err) throw err;
+  //   console.log("Connected!");
+  // });
 
   axios({
     method: "get",
@@ -321,15 +321,15 @@ function getWatchHistory(slug, type) {
           tmdb_id: data.movie.ids.tmdb,
         };
 
-        con.query("INSERT INTO MOVIES SET ? ", movie, (err, res) => {
-          if (err) throw err;
-          console.log("Last insert ID:", res.insertId);
-        });
+        // con.query("INSERT INTO MOVIES SET ? ", movie, (err, res) => {
+        //   if (err) throw err;
+        //   console.log("Last insert ID:", res.insertId);
+        // });
       }
-      con.end((err) => {
-        if (err) throw err;
-        console.log("Connection closed");
-      });
+      // con.end((err) => {
+      //   if (err) throw err;
+      //   console.log("Connection closed");
+      // });
     })
     .catch((err) => {
       console.log(err.response.status + " " + err.response.statusText);
@@ -377,23 +377,27 @@ function getMovieSummary(id) {
  */
 
 function retrieveMovies() {
-  con.connect((err) => {
-    if (err) throw err;
-    console.log("Connected!");
-  });
+  // con.connect((err) => {
+  //   if (err) throw err;
+  //   console.log("Connected!");
+  // });
 
   let movieIds: number[] = [];
 
   return new Promise((resolve, reject) => {
-    con.query("SELECT id FROM MOVIES", (err, res) => {
-      if (err) reject(err);
-      resolve(res);
-    });
-  }).then((rows: any[]) => {
-    rows.forEach((row) => {
-      // console.log("row id is " + row.id);
-      movieIds.push(row.id);
-    });
+    // con.query("SELECT id FROM MOVIES", (err, res) => {
+    //   if (err) reject(err);
+    //   resolve(res);
+    // });
+    //   console.log("Connect to database here");
+    // }).then((rows: any[]) => {
+    //   rows.forEach((row) => {
+    //     // console.log("row id is " + row.id);
+    //     movieIds.push(row.id);
+    //   });
+    //   return movieIds;
+    // });
+    //   //TODO: Add proper connection here
     return movieIds;
   });
 }
