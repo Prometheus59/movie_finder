@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAccessToken, getUserInfo } from "../trakt_auth";
 const express = require("express");
 const router = express.Router();
 require("dotenv").config();
@@ -13,20 +14,26 @@ router.get("/redirect", (req, res) => {
 });
 
 router.post("/code", (req, res) => {
-  axios
-    .post(`https://api.trakt.tv/oauth/token`, {
-      code: req.body.code,
-      client_id: process.env.CLIENT_ID,
-      client_secret: process.env.CLIENT_SECRET,
-      redirect_uri: process.env.TRAKT_REDIRECT_URI,
-      grant_type: "authorization_code",
-    })
-    .then((response) => {
-      //TODO: Save the access token to the database
-      res.json(response.data);
+  const code = req.body.code;
+  getAccessToken(code)
+    .then((access_token) => {
+      getUserInfo(access_token)
+        .then((user) => {
+          console.log(JSON.stringify(user));
+          // Returns: {"username":"Prometheus59","private":false,"name":"Prometheus59","vip":false,"vip_ep":false,"ids":{"slug":"prometheus59"}}
+          // TODO: Check database to see if user exists, if not, create new user in database -->
+          // note: Might need to prompt for password (and username) to create a new user
+          res.status(200).json(user);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json(err);
+          throw err;
+        });
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).json(err);
       throw err;
     });
 });
