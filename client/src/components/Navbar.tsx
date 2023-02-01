@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import profileIcon from "../images/profile.png";
+import Login from "./login";
 
 import Search from "./Search";
 
@@ -57,6 +58,7 @@ function Navbar() {
             <Link to="/settings">
               <button>Settings</button>
             </Link>
+            <button>Login</button>
           </div>
         </div>
       </div>
