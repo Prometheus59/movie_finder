@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import profileIcon from "../images/profile.png";
-import Login from "./login";
+import LoginModal from "./LoginModal";
 
 import Search from "./Search";
 
@@ -11,57 +11,66 @@ const logo = require("../images/favicon.ico");
 // const searchIcon = require("../images/search_icon.png");
 
 function Navbar() {
+  const [modalStatus, setModalStatus] = React.useState(false);
   return (
-    <div className="navbar">
-      <div className="navbar-left">
-        <Link to="/">
-          <img id="logo" src={logo} alt="WatchIt Logo" />
-        </Link>
+    <div>
+      <div className="navbar">
+        <div className="navbar-left">
+          <Link to="/">
+            <img id="logo" src={logo} alt="WatchIt Logo" />
+          </Link>
 
-        {/* <img id="search-icon" src={searchIcon} alt="Search Icon" /> */}
-        <Search />
+          {/* <img id="search-icon" src={searchIcon} alt="Search Icon" /> */}
+          <Search />
 
-        <nav>
-          <div className="media-types">
-            <NavLink
-              to="/movies"
-              className={({ isActive }) => (isActive ? "active" : "inactive")}
-            >
-              Movies
-            </NavLink>
-            <NavLink
-              to="/shows"
-              className={({ isActive }) => (isActive ? "active" : "inactive")}
-            >
-              TV
-            </NavLink>
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "active" : "inactive")}
-            >
-              Any
-            </NavLink>
-          </div>
-        </nav>
-      </div>
+          <nav>
+            <div className="media-types">
+              <NavLink
+                to="/movies"
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+              >
+                Movies
+              </NavLink>
+              <NavLink
+                to="/shows"
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+              >
+                TV
+              </NavLink>
+              <NavLink
+                to="/"
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+              >
+                Any
+              </NavLink>
+            </div>
+          </nav>
+        </div>
 
-      <div className="navbar-right">
-        {/* Change below items to icons/dropdowns */}
-        {/* <Link to="/settings">Settings</Link>
+        <div className="navbar-right">
+          {/* Change below items to icons/dropdowns */}
+          {/* <Link to="/settings">Settings</Link>
         <Link to="/profile">Profile</Link> */}
-        <div className="dropdown">
-          <img id="profile-icon" src={profileIcon} alt="Profile" />
-          <div className="dropdown-content">
-            <Link to="/profile">
-              <button>Profile</button>
-            </Link>
-            <Link to="/settings">
-              <button>Settings</button>
-            </Link>
-            <button>Login</button>
+          <div className="dropdown">
+            <img id="profile-icon" src={profileIcon} alt="Profile" />
+            <div className="dropdown-content">
+              <Link to="/profile">
+                <button>Profile</button>
+              </Link>
+              <Link to="/settings">
+                <button>Settings</button>
+              </Link>
+              <button onClick={() => setModalStatus(!modalStatus)}>
+                Login
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      <LoginModal
+        isOpen={modalStatus}
+        onRequestClose={() => setModalStatus(false)}
+      />
     </div>
   );
 }

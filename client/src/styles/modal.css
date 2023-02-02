@@ -1,0 +1,41 @@
+.loginModal {
+  position: absolute;
+  top: 0px;
+  left: auto;
+  right: auto;
+  width: 40%;
+  max-height: 50%;
+  border: 1px solid #ccc;
+  background: #fff;
+  /* background-color: #ccc; */
+  overflow: auto;
+  border-radius: 30px;
+  outline: none;
+  padding: 20px;
+}
+
+#close-btn {
+  position: absolute;
+  right: 2px;
+  top: 0;
+  padding: 10px;
+  border: none;
+  background-color: white;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#close-btn:hover {
+  cursor: pointer;
+  background-color: orange;
+}
+
+.modal__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}

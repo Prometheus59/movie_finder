@@ -13,7 +13,8 @@ const Login = () => {
       supabaseClient={supabase}
       // Add theme here
       appearance={{ theme: ThemeSupa }}
-      providers={["google", "github", "facebook"]}
+      // TODO: Add auth providers here
+      // providers={["google", "github", "facebook"]}
     />
   );
 };
