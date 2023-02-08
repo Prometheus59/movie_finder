@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Lottie from "react-lottie";
+import Lottie from "react-lottie-player";
 import loadingAnimation from "../animations/loadingAnimation.json";
 import "../styles/movieCard.css";
 
@@ -13,16 +13,6 @@ interface ShowCardProps {
   title: string;
   year?: number;
 }
-
-// Options for Lottie animations
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: loadingAnimation,
-  rendererSettings: {
-    preserveAspectRatio: "xMidYMid slice",
-  },
-};
 
 export default function ShowCard(props: ShowCardProps) {
   const { tmdb_id, title, year, class_name } = props;
@@ -54,7 +44,12 @@ export default function ShowCard(props: ShowCardProps) {
   if (!show) {
     return (
       <div>
-        <Lottie options={defaultOptions} height={300} width={300} />
+        <Lottie
+          loop
+          animationData={loadingAnimation}
+          play
+          style={{ width: 300, height: 300 }}
+        />
       </div>
     );
   } else {

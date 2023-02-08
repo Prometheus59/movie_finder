@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Lottie from "react-lottie";
+import Lottie from "react-lottie-player";
 import loadingAnimation from "../animations/loadingAnimation.json";
 import "../styles/movieCard.css";
 
@@ -17,16 +17,6 @@ interface MovieCardProps {
   // description: string;
   // genres: string[];
 }
-
-// Options for Lottie animations
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: loadingAnimation,
-  rendererSettings: {
-    preserveAspectRatio: "xMidYMid slice",
-  },
-};
 
 export default function MovieCard(props: MovieCardProps) {
   const { tmdb_id, title, year, class_name } = props;
@@ -62,18 +52,21 @@ export default function MovieCard(props: MovieCardProps) {
           src={backdrop_url_base + movie.backdrop_path}
           alt="movie backdrop"
         />
-      )
+      );
     } else {
-      return (
-        <div className="movie-card-background" />
-      )
+      return <div className="movie-card-background" />;
     }
   }
 
   if (!movie) {
     return (
       <div>
-        <Lottie options={defaultOptions} height={300} width={300} />
+        <Lottie
+          loop
+          animationData={loadingAnimation}
+          play
+          style={{ width: 300, height: 300 }}
+        />
       </div>
     );
   } else {
