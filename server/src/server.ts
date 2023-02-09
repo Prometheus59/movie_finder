@@ -7,6 +7,7 @@ import { search } from "./tmdb";
 // Import routes
 const movies = require("./routes/movies");
 const shows = require("./routes/shows");
+const auth = require("./routes/auth");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+app.use("/auth", auth);
 app.use("/movies", movies);
 app.use("/shows", shows);
 
